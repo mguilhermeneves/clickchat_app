@@ -1,16 +1,26 @@
-# clickchat_app
+![logo clickchat](readme_images/clickchat_logo.png)
 
-A new Flutter project.
+Aplicativo de chat mobile desenvolvido com Flutter utilizando Firebase.
 
-## Getting Started
 
-This project is a starting point for a Flutter application.
+## 🛠 Funcionalidades
+- `Autenticação`
+  - Criar uma conta para entrar no aplicativo
+- `Conversas`
+  - Listar conversas
+  - Enviar mensagens para os contatos e receber
+  - Remover mensagens apenas para um usuário
+- `Contatos`
+  - Listar contatos
+  - Adicionar, remover e editar um contato
+  - Buscar contatos
+- `Configurações`
 
-A few resources to get you started if this is your first Flutter project:
+## 📝 Arquitetura
+- Tests
+- Repository Pattern: Para acesso a API externa
+- Dependency Injection: Resolver dependências das classes
+- Controllers: Guardar e mudar estados
+- ValueNotifier
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## 📦 Packages
