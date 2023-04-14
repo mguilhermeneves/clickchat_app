@@ -36,8 +36,7 @@ class Dialog {
               Divider(
                 thickness: 1,
                 height: 1,
-                color:
-                    Theme.of(context).colorScheme.onBackground.withOpacity(0.4),
+                color: Theme.of(context).colorScheme.outlineVariant,
               ),
               Center(
                 child: TextButton(
