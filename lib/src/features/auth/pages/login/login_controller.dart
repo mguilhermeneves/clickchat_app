@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:clickchat_app/src/shared/helpers/app.dart';
+import 'package:clickchat_app/src/global/helpers/app.dart';
 
 import '../../models/login_model.dart';
 import '../../states/login_state.dart';

@@ -1,9 +1,15 @@
 import 'package:clickchat_app/src/features/auth/pages/login/login_page.dart';
+import 'package:clickchat_app/src/features/chats/pages/chats_page.dart';
+import 'package:clickchat_app/src/features/contacts/pages/contacts/contacts_page.dart';
+import 'package:clickchat_app/src/global/theme/extensions/floating_action_button_extension.dart';
+import 'package:clickchat_app/src/global/theme/extensions/icon_extension.dart';
 import 'package:flutter/material.dart';
+import 'package:iconsax/iconsax.dart';
 
 import 'package:provider/provider.dart';
 
-import 'shared/services/auth_service.dart';
+import 'global/services/auth_service.dart';
+import 'global/theme/app_theme.dart';
 
 class AppPage extends StatefulWidget {
   const AppPage({super.key});
@@ -13,6 +19,8 @@ class AppPage extends StatefulWidget {
 }
 
 class _AppPageState extends State<AppPage> {
+  int page = 0;
+
   @override
   void initState() {
     super.initState();
@@ -21,32 +29,165 @@ class _AppPageState extends State<AppPage> {
   @override
   Widget build(BuildContext context) {
     final auth = context.watch<AuthService>();
+    final colorScheme = Theme.of(context).colorScheme;
 
     if (!auth.signedIn) {
       return const LoginPage();
     }
 
+    final pageController = PageController(initialPage: page);
+
     return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Text('App Page'),
-            const SizedBox(
-              height: 10,
+      body: PageView(
+        physics: const NeverScrollableScrollPhysics(),
+        controller: pageController,
+        children: [
+          ChatsPage(),
+          ContactsPage(),
+          //! temp
+          Scaffold(
+            body: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text('App Page'),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Text(auth.user?.displayName ?? 'Sem nome'),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      auth.signOut();
+                    },
+                    child: const Text('Sair'),
+                  ),
+                ],
+              ),
             ),
-            Text(auth.user?.displayName ?? 'Sem nome'),
-            const SizedBox(
-              height: 10,
-            ),
-            ElevatedButton(
-              onPressed: () {
-                auth.signOut();
-              },
-              child: const Text('Sair'),
-            ),
-          ],
+          ),
+        ],
+      ),
+      // bottomNavigationBar: Container(
+      //   decoration: BoxDecoration(
+      //     border: Border(
+      //       top: BorderSide(
+      //         color: Theme.of(context).colorScheme.onBackground,
+      //         width: 1,
+      //       ),
+      //     ),
+      //   ),
+      //   child: NavigationBar(
+      //     height: 57,
+      //     onDestinationSelected: (index) {
+      //       setState(() => page = index);
+      //       pageController.jumpToPage(page);
+      //     },
+      //     labelBehavior: NavigationDestinationLabelBehavior.alwaysHide,
+      //     surfaceTintColor: Colors.red,
+      //     elevation: 0,
+      //     selectedIndex: page,
+      //     backgroundColor: Theme.of(context).colorScheme.background,
+      //     destinations: <Widget>[
+      //       NavigationDestination(
+      //         icon: const Icon(Iconsax.message_text),
+      //         selectedIcon: const Icon(Iconsax.message_text).gradient(),
+      //         label: 'Chats',
+      //       ),
+      //       NavigationDestination(
+      //         icon: const Icon(Iconsax.profile_2user),
+      //         selectedIcon: const Icon(Iconsax.profile_2user).gradient(),
+      //         label: 'Messages',
+      //       ),
+      //       NavigationDestination(
+      //         icon: const Icon(Iconsax.setting),
+      //         selectedIcon: const Icon(Iconsax.setting).gradient(),
+      //         label: 'Config',
+      //       ),
+      //     ],
+      //   ),
+      // ),
+      bottomNavigationBar: Theme(
+        data: ThemeData(
+          splashColor: colorScheme.onSurface,
+          highlightColor: colorScheme.onSurface,
         ),
+        child: Container(
+          decoration: BoxDecoration(
+              // boxShadow: <BoxShadow>[
+              //   BoxShadow(
+              //     color: colorScheme.background.withOpacity(0.5),
+              //     blurRadius: 5,
+              //   ),
+              // ],
+              ),
+          child: BottomNavigationBar(
+            elevation: 0,
+            showSelectedLabels: false,
+            showUnselectedLabels: false,
+            currentIndex: page,
+            selectedItemColor: colorScheme.primary,
+            unselectedItemColor: colorScheme.onSecondary,
+            backgroundColor: colorScheme.onBackground,
+            type: BottomNavigationBarType.fixed,
+            onTap: (index) {
+              setState(() => page = index);
+
+              pageController.jumpToPage(page);
+            },
+            items: [
+              BottomNavigationBarItem(
+                icon: _buildBottomNavigationBarIcon(
+                  icon: Iconsax.message_text_1,
+                  active: page == 0,
+                ),
+                label: 'messages',
+              ),
+              BottomNavigationBarItem(
+                icon: _buildBottomNavigationBarIcon(
+                  icon: Iconsax.profile_2user,
+                  active: page == 1,
+                ),
+                label: 'contacts',
+              ),
+              BottomNavigationBarItem(
+                icon: _buildBottomNavigationBarIcon(
+                  icon: Iconsax.setting,
+                  active: page == 2,
+                ),
+                label: 'settings',
+              ),
+              //     // BottomNavigationBarItem(
+              //     //   label: 'settings',
+              //     //   icon: FloatingActionButton(
+              //     //     onPressed: () {},
+              //     //     child: const Icon(Iconsax.message_add_1),
+              //     //     // mini: true,
+              //     //   ).gradient(),
+              //     // ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildBottomNavigationBarIcon({
+    required IconData icon,
+    required bool active,
+  }) {
+    return AnimatedSwitcher(
+      switchInCurve: Curves.elasticIn,
+      switchOutCurve: Curves.fastLinearToSlowEaseIn,
+      duration: const Duration(milliseconds: 150),
+      child: active
+          ? Icon(icon, key: const ValueKey(1)).gradient()
+          : Icon(icon, key: const ValueKey(2)),
+      transitionBuilder: (child, animation) => ScaleTransition(
+        scale: animation,
+        child: child,
       ),
     );
   }

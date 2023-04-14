@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:clickchat_app/src/features/auth/models/signup_model.dart';
-import 'package:clickchat_app/src/shared/services/auth_service.dart';
+import 'package:clickchat_app/src/global/services/auth_service.dart';
 
 import '../states/singup_state.dart';
 

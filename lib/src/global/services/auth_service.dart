@@ -1,3 +1,5 @@
+import 'package:clickchat_app/src/global/models/user_model.dart';
+import 'package:clickchat_app/src/global/repositories/user_repository.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -5,10 +7,12 @@ import '../helpers/result.dart';
 
 class AuthService extends ChangeNotifier {
   final _auth = FirebaseAuth.instance;
+  final IUserRepository _userRepository;
   User? user;
   bool get signedIn => user != null;
+  String get userId => user?.uid ?? '';
 
-  AuthService() {
+  AuthService(this._userRepository) {
     _auth.authStateChanges().listen((User? userChanges) {
       user = userChanges;
       notifyListeners();
@@ -29,7 +33,9 @@ class AuthService extends ChangeNotifier {
 
       user = credentials.user;
 
-      user!.updateDisplayName(displayName);
+      await user!.updateDisplayName(displayName);
+
+      _userRepository.add(UserModel(id: user!.uid, email: email));
 
       return Result.ok();
     } on FirebaseAuthException catch (e) {
@@ -37,6 +43,9 @@ class AuthService extends ChangeNotifier {
           'Ocorreu um erro inesperado ao criar a conta. Tente mais tarde.';
 
       return Result.error(exceptionMessage);
+    } catch (_) {
+      return Result.error(
+          'Ocorreu um erro inesperado ao criar a conta. Tente mais tarde.');
     }
   }
 

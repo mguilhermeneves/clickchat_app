@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:provider/provider.dart';
 
-import 'package:clickchat_app/src/shared/theme/extensions/elevated_button_extension.dart';
-import 'package:clickchat_app/src/shared/theme/extensions/text_extension.dart';
+import 'package:clickchat_app/src/global/theme/extensions/elevated_button_extension.dart';
+import 'package:clickchat_app/src/global/theme/extensions/text_extension.dart';
 import 'package:clickchat_app/src/features/auth/validators/signup_validator.dart';
-import 'package:clickchat_app/src/shared/theme/extensions/circular_progress_indicator_exntesion.dart';
+import 'package:clickchat_app/src/global/theme/extensions/circular_progress_indicator_extension.dart';
 
 import 'signup_controller.dart';
 
@@ -42,6 +42,7 @@ class SignupPage extends StatelessWidget {
                               labelText: 'Nome e Sobrenome',
                               hintText: 'Digite o nome e sobrenome',
                             ),
+                            textCapitalization: TextCapitalization.words,
                             validator: SignupValidator.validateNameAndSurname,
                             onSaved: (value) =>
                                 controller.signup.nameAndSurname = value,
@@ -55,6 +56,7 @@ class SignupPage extends StatelessWidget {
                             ),
                             validator: SignupValidator.validateEmail,
                             onSaved: (value) => controller.signup.email = value,
+                            keyboardType: TextInputType.emailAddress,
                           ),
                           const SizedBox(height: 15),
                           TextFormField(

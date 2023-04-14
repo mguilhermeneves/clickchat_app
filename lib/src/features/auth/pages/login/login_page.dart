@@ -5,9 +5,9 @@ import 'package:provider/provider.dart';
 import 'package:iconsax/iconsax.dart';
 
 import 'package:clickchat_app/src/features/auth/validators/login_validator.dart';
-import 'package:clickchat_app/src/shared/theme/extensions/circular_progress_indicator_exntesion.dart';
-import 'package:clickchat_app/src/shared/theme/extensions/text_extension.dart';
-import 'package:clickchat_app/src/shared/theme/extensions/elevated_button_extension.dart';
+import 'package:clickchat_app/src/global/theme/extensions/circular_progress_indicator_extension.dart';
+import 'package:clickchat_app/src/global/theme/extensions/text_extension.dart';
+import 'package:clickchat_app/src/global/theme/extensions/elevated_button_extension.dart';
 
 import 'login_controller.dart';
 
@@ -54,6 +54,7 @@ class LoginPage extends StatelessWidget {
                             ),
                             validator: LoginValidator.validateEmail,
                             onSaved: (value) => controller.login.email = value,
+                            keyboardType: TextInputType.emailAddress,
                           ),
                           const SizedBox(height: 15),
                           TextFormField(

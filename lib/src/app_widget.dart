@@ -1,15 +1,12 @@
+import 'package:clickchat_app/src/features/contacts/contacts_provider.dart';
 import 'package:flutter/material.dart';
 
 import 'package:provider/provider.dart';
 
-import 'package:clickchat_app/src/features/auth/pages/signup/signup_controller.dart';
-
-import 'features/auth/pages/login/login_controller.dart';
+import 'app_provider.dart';
+import 'features/auth/auth_provider.dart';
 import 'features/auth/pages/signup/signup_page.dart';
-import 'features/auth/stores/login_store.dart';
-import 'features/auth/stores/signup_store.dart';
-import 'shared/services/auth_service.dart';
-import 'shared/theme/app_theme.dart';
+import 'global/theme/app_theme.dart';
 import 'app_page.dart';
 
 final navigatorKey = GlobalKey<NavigatorState>();
@@ -22,17 +19,9 @@ class AppWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => AuthService()),
-        ChangeNotifierProvider(
-          create: (context) => SignupStore(context.read()),
-        ),
-        ChangeNotifierProvider(
-          create: (context) => LoginStore(context.read()),
-        ),
-        Provider(
-          create: (context) => SignupController(context.read()),
-        ),
-        Provider(create: (context) => LoginController(context.read())),
+        ...appProvider,
+        ...authProvider,
+        ...contactsProvider,
       ],
       child: MaterialApp(
         title: 'clickchat',
