@@ -5,7 +5,7 @@ import 'package:mocktail/mocktail.dart';
 
 import 'package:clickchat_app/src/global/exceptions/repository_exception.dart';
 import 'package:clickchat_app/src/global/constants/firestore_constant.dart';
-import 'package:clickchat_app/src/features/contacts/models/contact_model.dart';
+import 'package:clickchat_app/src/global/models/contact_model.dart';
 import 'package:clickchat_app/src/features/contacts/repositories/contact_repository.dart';
 
 import '../../../../mocks/dependencies_mock.dart';

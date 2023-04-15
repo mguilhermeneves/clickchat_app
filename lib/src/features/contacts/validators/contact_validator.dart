@@ -1,6 +1,6 @@
 import 'package:clickchat_app/src/global/helpers/result.dart';
 
-import '../models/contact_model.dart';
+import '../../../global/models/contact_model.dart';
 
 class ContactValidator {
   static String? validateName(String? value) {

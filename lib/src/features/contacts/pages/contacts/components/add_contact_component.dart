@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:provider/provider.dart';
 
-import 'package:clickchat_app/src/features/contacts/models/contact_model.dart';
+import 'package:clickchat_app/src/global/models/contact_model.dart';
 import 'package:clickchat_app/src/features/contacts/pages/contacts/contacts_controller.dart';
 import 'package:clickchat_app/src/features/contacts/validators/contact_validator.dart';
 import 'package:clickchat_app/src/global/theme/extensions/circular_progress_indicator_extension.dart';

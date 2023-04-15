@@ -4,7 +4,7 @@ import 'package:clickchat_app/src/global/models/user_model.dart';
 import 'package:clickchat_app/src/global/constants/firestore_constant.dart';
 import 'package:clickchat_app/src/global/exceptions/repository_exception.dart';
 
-import '../models/contact_model.dart';
+import '../../../global/models/contact_model.dart';
 
 abstract class IContactRepository {
   Future<void> add(ContactModel contact, String requestedByUserId);
@@ -22,7 +22,7 @@ class ContactRepository implements IContactRepository {
   @override
   Future<void> add(ContactModel contact, String requestedByUserId) async {
     try {
-      _firestore
+      await _firestore
           .collection(FirestoreConstant.collectionUsers)
           .doc(requestedByUserId)
           .collection(FirestoreConstant.collectionContacts)
@@ -35,7 +35,7 @@ class ContactRepository implements IContactRepository {
   @override
   Future<void> update(ContactModel contact, String requestedByUserId) async {
     try {
-      _firestore
+      await _firestore
           .collection(FirestoreConstant.collectionUsers)
           .doc(requestedByUserId)
           .collection(FirestoreConstant.collectionContacts)
@@ -49,7 +49,7 @@ class ContactRepository implements IContactRepository {
   @override
   Future<void> delete(String id, String requestedByUserId) async {
     try {
-      _firestore
+      await _firestore
           .collection(FirestoreConstant.collectionUsers)
           .doc(requestedByUserId)
           .collection(FirestoreConstant.collectionContacts)

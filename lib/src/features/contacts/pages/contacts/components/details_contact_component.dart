@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 
 import 'package:clickchat_app/src/global/widgets/avatar_widget.dart';
 
-import '../../../models/contact_model.dart';
+import '../../../../../global/models/contact_model.dart';
 import '../contacts_controller.dart';
 
 class DetailsContactComponent extends StatefulWidget {

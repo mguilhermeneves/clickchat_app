@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:clickchat_app/src/features/contacts/usecases/get_all_contacts.dart';
 import 'package:clickchat_app/src/global/helpers/app.dart';
 
-import '../../models/contact_model.dart';
+import '../../../../global/models/contact_model.dart';
 import '../../states/contacts_state.dart';
 import '../../usecases/add_contact.dart';
 import '../../usecases/delete_contact.dart';

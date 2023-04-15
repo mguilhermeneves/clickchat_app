@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 import 'package:clickchat_app/src/global/widgets/avatar_widget.dart';
 
-import '../../../models/contact_model.dart';
+import '../../../../../global/models/contact_model.dart';
 
 class ContactComponent extends StatelessWidget {
   final ContactModel contact;

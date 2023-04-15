@@ -1,4 +1,4 @@
-import '../models/contact_model.dart';
+import '../../../global/models/contact_model.dart';
 
 abstract class ContactsState {
   ContactsState();

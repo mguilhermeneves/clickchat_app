@@ -1,4 +1,4 @@
-import 'package:clickchat_app/src/features/contacts/models/contact_model.dart';
+import 'package:clickchat_app/src/global/models/contact_model.dart';
 import 'package:clickchat_app/src/features/contacts/repositories/contact_repository.dart';
 import 'package:clickchat_app/src/global/exceptions/repository_exception.dart';
 import 'package:clickchat_app/src/global/helpers/result_with.dart';

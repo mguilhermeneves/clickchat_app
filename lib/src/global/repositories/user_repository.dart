@@ -18,7 +18,7 @@ class UserRepository implements IUserRepository {
   @override
   Future<void> add(UserModel user) async {
     try {
-      _firestore
+      await _firestore
           .collection(FirestoreConstant.collectionUsers)
           .doc(user.id)
           .set({'email': user.email});

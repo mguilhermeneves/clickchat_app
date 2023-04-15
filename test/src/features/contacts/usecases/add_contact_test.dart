@@ -2,7 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 
 import 'package:mocktail/mocktail.dart';
 
-import 'package:clickchat_app/src/features/contacts/models/contact_model.dart';
+import 'package:clickchat_app/src/global/models/contact_model.dart';
 import 'package:clickchat_app/src/features/contacts/usecases/add_contact.dart';
 import 'package:clickchat_app/src/global/exceptions/repository_exception.dart';
 import 'package:clickchat_app/src/global/models/user_model.dart';
