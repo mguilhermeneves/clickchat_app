@@ -57,7 +57,7 @@ class _AddContactComponentState extends State<AddContactComponent> {
             Divider(
               thickness: 1,
               height: 1,
-              color: Theme.of(context).colorScheme.outlineVariant,
+              color: Theme.of(context).colorScheme.outline,
             ),
             SingleChildScrollView(
               child: Padding(

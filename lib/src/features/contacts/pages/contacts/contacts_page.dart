@@ -1,6 +1,7 @@
 import 'package:clickchat_app/src/features/contacts/pages/contacts/components/add_contact_component.dart';
 import 'package:clickchat_app/src/global/widgets/messenger_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:iconsax/iconsax.dart';
 
 import 'package:provider/provider.dart';
@@ -36,6 +37,9 @@ class _ContactsPageState extends State<ContactsPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Contatos'),
+        systemOverlayStyle: SystemUiOverlayStyle(
+          systemNavigationBarColor: colorScheme.onBackground,
+        ),
         actions: [
           IconButton(
             onPressed: () {},

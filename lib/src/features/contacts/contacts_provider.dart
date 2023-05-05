@@ -2,9 +2,9 @@ import 'package:clickchat_app/src/features/contacts/usecases/delete_contact.dart
 import 'package:provider/provider.dart';
 
 import 'pages/contacts/contacts_controller.dart';
-import 'repositories/contact_repository.dart';
+import '../../global/repositories/contact_repository.dart';
 import 'usecases/add_contact.dart';
-import 'usecases/get_all_contacts.dart';
+import '../../global/usecases/get_all_contacts.dart';
 
 final contactsProvider = [
   Provider<IContactRepository>(

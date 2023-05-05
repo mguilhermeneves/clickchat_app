@@ -6,7 +6,7 @@ import 'package:mocktail/mocktail.dart';
 import 'package:clickchat_app/src/global/exceptions/repository_exception.dart';
 import 'package:clickchat_app/src/global/constants/firestore_constant.dart';
 import 'package:clickchat_app/src/global/models/contact_model.dart';
-import 'package:clickchat_app/src/features/contacts/repositories/contact_repository.dart';
+import 'package:clickchat_app/src/global/repositories/contact_repository.dart';
 
 import '../../../../mocks/dependencies_mock.dart';
 
@@ -62,6 +62,7 @@ void main() {
 
     expect(contacts.docs.length, 1);
     expect(contacts.docs.first['name'], 'Pedro');
+    expect(contacts.docs.first['userId'], '3djBWVDFgrMnCdh26QS0fKNkO3n1');
   });
 
   test('delete: deve remover um contact', () async {
@@ -89,6 +90,10 @@ void main() {
       () async {
     final firestore = FakeFirebaseFirestore();
     final contactRepository = ContactRepository(firestore);
+    final usersRef = firestore.collection(FirestoreConstant.collectionUsers);
+    const userId = '3djBWVDFgrMnCdh26QS0fKNkO3n1';
+
+    await usersRef.doc(userId).set({'email': ''});
 
     await firestore
         .collection(FirestoreConstant.collectionUsers)
@@ -97,14 +102,14 @@ void main() {
         .doc('9djBWVfFgrMnCdh26QS0fKNkO3n0')
         .set({
       'name': 'João',
-      'userId': '3djBWVDFgrMnCdh26QS0fKNkO3n1',
+      'userId': userId,
     });
 
-    final contact = await contactRepository.getByUserId(
-        '3djBWVDFgrMnCdh26QS0fKNkO3n1', requestedByUserId);
+    final contact =
+        await contactRepository.getByUserId(userId, requestedByUserId);
 
     expect(contact == null, false);
-    expect(contact?.userId, '3djBWVDFgrMnCdh26QS0fKNkO3n1');
+    expect(contact?.userId, userId);
   });
 
   test(

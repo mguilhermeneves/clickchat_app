@@ -1,5 +1,5 @@
 import 'package:clickchat_app/src/global/models/contact_model.dart';
-import 'package:clickchat_app/src/features/contacts/repositories/contact_repository.dart';
+import 'package:clickchat_app/src/global/repositories/contact_repository.dart';
 import 'package:clickchat_app/src/features/contacts/validators/contact_validator.dart';
 import 'package:clickchat_app/src/global/exceptions/repository_exception.dart';
 import 'package:clickchat_app/src/global/helpers/result.dart';

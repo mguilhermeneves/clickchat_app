@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'package:clickchat_app/src/features/contacts/usecases/get_all_contacts.dart';
+import 'package:clickchat_app/src/global/helpers/value_disposable.dart';
+import 'package:clickchat_app/src/global/usecases/get_all_contacts.dart';
 import 'package:clickchat_app/src/global/helpers/app.dart';
 
 import '../../../../global/models/contact_model.dart';
@@ -8,7 +9,8 @@ import '../../states/contacts_state.dart';
 import '../../usecases/add_contact.dart';
 import '../../usecases/delete_contact.dart';
 
-class ContactsController extends ValueNotifier<ContactsState> {
+class ContactsController extends ValueNotifier<ContactsState>
+    implements ValueDisposable {
   final IGetAllContacts _getAllContacts;
   final IAddContact _addContact;
   final IDeleteContact _deleteContact;
@@ -27,8 +29,6 @@ class ContactsController extends ValueNotifier<ContactsState> {
 
   Future<void> add(ContactModel contact) async {
     addLoading.value = true;
-
-    await Future.delayed(const Duration(seconds: 3));
 
     final result = await _addContact.call(contact);
 
@@ -58,8 +58,6 @@ class ContactsController extends ValueNotifier<ContactsState> {
   Future<void> _getAll() async {
     value = ContactsState.loading();
 
-    await Future.delayed(const Duration(seconds: 3));
-
     final result = _getAllContacts.call();
 
     if (result.succeeded) {
@@ -67,5 +65,10 @@ class ContactsController extends ValueNotifier<ContactsState> {
     } else {
       value = ContactsState.error(result.error!);
     }
+  }
+
+  @override
+  void disposeValue() {
+    value = ContactsState.initial();
   }
 }

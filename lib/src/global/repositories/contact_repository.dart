@@ -4,13 +4,17 @@ import 'package:clickchat_app/src/global/models/user_model.dart';
 import 'package:clickchat_app/src/global/constants/firestore_constant.dart';
 import 'package:clickchat_app/src/global/exceptions/repository_exception.dart';
 
-import '../../../global/models/contact_model.dart';
+import '../models/contact_model.dart';
 
 abstract class IContactRepository {
   Future<void> add(ContactModel contact, String requestedByUserId);
+
   Future<void> update(ContactModel contact, String requestedByUserId);
+
   Future<void> delete(String id, String requestedByUserId);
+
   Future<ContactModel?> getByUserId(String userId, String requestedByUserId);
+
   Stream<List<ContactModel>> getAll(String requestedByUserId);
 }
 
@@ -40,7 +44,7 @@ class ContactRepository implements IContactRepository {
           .doc(requestedByUserId)
           .collection(FirestoreConstant.collectionContacts)
           .doc(contact.id)
-          .set({'name': contact.name});
+          .update({'name': contact.name});
     } catch (e) {
       throw RepositoryException(e.toString());
     }
@@ -73,12 +77,14 @@ class ContactRepository implements IContactRepository {
 
       if (contacts.docs.isEmpty) return null;
 
-      final contact = contacts.docs.first;
+      final doc = contacts.docs.first;
 
-      return ContactModel.fromJson({
-        'id': contact.id,
-        ...contact.data(),
-      });
+      final user = await _getUser(userId);
+
+      final contact = ContactModel.fromJson({'id': doc.id, ...doc.data()})
+        ..email = user.email;
+
+      return contact;
     } catch (e) {
       throw RepositoryException(e.toString());
     }

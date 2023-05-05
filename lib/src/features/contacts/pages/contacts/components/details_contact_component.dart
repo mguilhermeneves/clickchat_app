@@ -33,7 +33,7 @@ class _DetailsContactComponentState extends State<DetailsContactComponent> {
             width: 40,
             height: 5,
             decoration: BoxDecoration(
-              color: colorScheme.onSurfaceVariant,
+              color: colorScheme.onSecondary,
               borderRadius: BorderRadius.circular(15),
             ),
           ),
@@ -43,7 +43,7 @@ class _DetailsContactComponentState extends State<DetailsContactComponent> {
               Avatar(
                 letter: widget.contact.name!,
                 imageUrl: widget.contact.userImageUrl,
-                backgroundColor: colorScheme.surfaceTint,
+                backgroundColor: colorScheme.onSurface,
                 size: 27,
               ),
               const SizedBox(width: 15),
@@ -70,7 +70,17 @@ class _DetailsContactComponentState extends State<DetailsContactComponent> {
           _buildAction(
             iconData: Iconsax.message_text_1,
             labelText: 'Enviar mensagem',
-            onTap: () {},
+            onTap: () {
+              Navigator.of(context).pop();
+              Navigator.of(context).pushReplacementNamed(
+                '/page',
+                arguments: 0,
+              );
+              Navigator.of(context).pushNamed(
+                '/chat-messages/new',
+                arguments: widget.contact.userId,
+              );
+            },
           ),
           const SizedBox(height: 15),
           Column(
@@ -82,8 +92,7 @@ class _DetailsContactComponentState extends State<DetailsContactComponent> {
                     const BorderRadius.vertical(top: Radius.circular(15)),
                 onTap: () {},
               ),
-              Divider(
-                  height: 1, thickness: 1, color: colorScheme.outlineVariant),
+              Divider(height: 1, thickness: 1, color: colorScheme.outline),
               ValueListenableBuilder(
                 valueListenable: controller.deleteLoading,
                 builder: (_, loading, child) => _buildAction(
@@ -111,7 +120,7 @@ class _DetailsContactComponentState extends State<DetailsContactComponent> {
   }) {
     return Container(
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.onSurfaceVariant,
+        color: Theme.of(context).colorScheme.surface,
         borderRadius: borderRadius,
       ),
       child: Material(
