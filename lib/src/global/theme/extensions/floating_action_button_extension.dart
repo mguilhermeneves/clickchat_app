@@ -13,6 +13,7 @@ extension FloatingActionButtonExtension on FloatingActionButton {
         key: key,
         onPressed: onPressed,
         backgroundColor: Colors.transparent,
+        foregroundColor: Colors.white,
         elevation: 0,
         child: child,
       ),

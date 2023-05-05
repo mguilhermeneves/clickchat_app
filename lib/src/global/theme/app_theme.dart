@@ -17,31 +17,27 @@ class AppTheme {
 
   static const primaryColor = Color(0xFF915af0);
 
-  static const _backgroundColor = Color(0xff000000);
+  static const _onPrimaryColor = Color(0xffe6e5e5);
+  static const _secondaryColor = Color(0xff6d6d88);
+  static const _onSecondaryColor = Color(0xff55556c);
 
-  static const _onBackgroundColor = Color(0xff0b0b0d);
+  static const _backgroundColor = Color(0xff171720);
+  static const _onBackgroundColor = Color(0xff1e1e2a);
 
-  static const _surfaceColor = Color(0xff0f0e10);
+  static const _surfaceColor = Color(0xFF1d1d29);
   static const _surfaceTintcolor = Color(0xff1b1b1d);
 
-  /// Utilizado normalmente em BottomSheet, Dialog...
-  static const _onSurfaceColor = Color(0xff161618);
+  static const _onSurfaceColor = Color(0xff1b1b26);
   static const _onSurfaceVariantColor = Color(0xff232325);
 
-  /// Utilizado normalmente em textos, icones...
-  static const _onPrimaryColor = Color(0xffe6e5e5);
-
-  static const _onSecondaryColor = Color(0xff444348);
-
-  static const _outlineColor = Color(0xFF191919);
-
-  // 0xFF1F1F1F
-  static const _outlineVariantColor = Color(0xFF272727);
+  static const _outlineColor = Color(0xff242431);
+  static const _outlineVariantColor = Color(0xFF272727); // 0xFF1F1F1F
 
   static final _errorColor = Colors.red.shade300;
 
   static ThemeData get dark => ThemeData(
-        /// useMaterial3: true,
+        // useMaterial3: true,
+        scaffoldBackgroundColor: _backgroundColor,
         primaryColor: primaryColor,
         canvasColor: _backgroundColor,
         splashColor: _onSurfaceColor,
@@ -50,6 +46,7 @@ class AppTheme {
               onBackground: _onBackgroundColor,
               primary: primaryColor,
               onPrimary: _onPrimaryColor,
+              secondary: _secondaryColor,
               onSecondary: _onSecondaryColor,
               surface: _surfaceColor,
               onSurface: _onSurfaceColor,
@@ -139,10 +136,14 @@ class AppTheme {
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(100),
             ),
+            disabledForegroundColor: primaryColor.withOpacity(0.3),
           ),
         ),
-        dialogTheme: const DialogTheme(
-          backgroundColor: _onSurfaceColor,
+        dialogTheme: DialogTheme(
+          backgroundColor: _backgroundColor,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15),
+          ),
         ),
         snackBarTheme: SnackBarThemeData(
           backgroundColor: _onSurfaceColor.withOpacity(0.95),
@@ -151,20 +152,21 @@ class AppTheme {
           shadowColor: Colors.transparent,
           foregroundColor: _onPrimaryColor,
           backgroundColor: _backgroundColor,
-          centerTitle: false,
+          centerTitle: true,
           titleTextStyle: TextStyle(
             color: _onPrimaryColor,
-            fontSize: 20,
+            fontSize: 19.5,
             fontWeight: FontWeight.w500,
             fontFamily: fontFamily,
           ),
           systemOverlayStyle: SystemUiOverlayStyle(
             statusBarIconBrightness: Brightness.light,
             statusBarBrightness: Brightness.light,
+            systemNavigationBarColor: _backgroundColor,
           ),
         ),
         bottomSheetTheme: const BottomSheetThemeData(
-          backgroundColor: _onSurfaceColor,
+          backgroundColor: _backgroundColor,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.vertical(top: Radius.circular(15)),
           ),
@@ -172,6 +174,17 @@ class AppTheme {
         progressIndicatorTheme: ProgressIndicatorThemeData(
           linearMinHeight: 1,
           linearTrackColor: primaryColor.withOpacity(0.4),
+        ),
+        popupMenuTheme: PopupMenuThemeData(
+          color: _surfaceColor,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15),
+          ),
+          textStyle: const TextStyle(
+            color: _onPrimaryColor,
+            fontSize: 15,
+            fontFamily: fontFamily,
+          ),
         ),
       );
 }

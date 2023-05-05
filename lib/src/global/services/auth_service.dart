@@ -1,8 +1,11 @@
-import 'package:clickchat_app/src/global/models/user_model.dart';
-import 'package:clickchat_app/src/global/repositories/user_repository.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
+import 'package:firebase_auth/firebase_auth.dart';
+
+import 'package:clickchat_app/src/global/models/user_model.dart';
+import 'package:clickchat_app/src/global/repositories/user_repository.dart';
+
+import '../../app_provider.dart';
 import '../helpers/result.dart';
 
 class AuthService extends ChangeNotifier {
@@ -35,7 +38,7 @@ class AuthService extends ChangeNotifier {
 
       await user!.updateDisplayName(displayName);
 
-      _userRepository.add(UserModel(id: user!.uid, email: email));
+      _userRepository.add(UserModel(id: user!.uid, email: email.trim()));
 
       return Result.ok();
     } on FirebaseAuthException catch (e) {
@@ -65,7 +68,9 @@ class AuthService extends ChangeNotifier {
     }
   }
 
-  Future<void> signOut() async {
+  Future<void> signOut(BuildContext context) async {
+    AppProvider.disposeValues(context);
+
     await _auth.signOut();
   }
 
