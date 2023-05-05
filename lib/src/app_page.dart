@@ -1,30 +1,31 @@
+import 'package:clickchat_app/src/app_provider.dart';
 import 'package:clickchat_app/src/features/auth/pages/login/login_page.dart';
-import 'package:clickchat_app/src/features/chats/pages/chats_page.dart';
+import 'package:clickchat_app/src/features/chats/pages/chats/chats_controller.dart';
+import 'package:clickchat_app/src/features/chats/pages/chats/chats_page.dart';
 import 'package:clickchat_app/src/features/contacts/pages/contacts/contacts_page.dart';
-import 'package:clickchat_app/src/global/theme/extensions/floating_action_button_extension.dart';
 import 'package:clickchat_app/src/global/theme/extensions/icon_extension.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:iconsax/iconsax.dart';
 
 import 'package:provider/provider.dart';
 
 import 'global/services/auth_service.dart';
-import 'global/theme/app_theme.dart';
 
 class AppPage extends StatefulWidget {
-  const AppPage({super.key});
+  final int? page;
+
+  const AppPage({this.page, super.key});
 
   @override
   State<AppPage> createState() => _AppPageState();
 }
 
 class _AppPageState extends State<AppPage> {
-  int page = 0;
-
-  @override
-  void initState() {
-    super.initState();
-  }
+  late int page = widget.page ?? 0;
+  late final pageController = PageController(
+    initialPage: widget.page ?? page,
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -34,8 +35,6 @@ class _AppPageState extends State<AppPage> {
     if (!auth.signedIn) {
       return const LoginPage();
     }
-
-    final pageController = PageController(initialPage: page);
 
     return Scaffold(
       body: PageView(
@@ -55,12 +54,13 @@ class _AppPageState extends State<AppPage> {
                     height: 10,
                   ),
                   Text(auth.user?.displayName ?? 'Sem nome'),
+                  Text(auth.user?.uid ?? ''),
                   const SizedBox(
                     height: 10,
                   ),
                   ElevatedButton(
                     onPressed: () {
-                      auth.signOut();
+                      auth.signOut(context);
                     },
                     child: const Text('Sair'),
                   ),
@@ -116,20 +116,23 @@ class _AppPageState extends State<AppPage> {
         ),
         child: Container(
           decoration: BoxDecoration(
-              // boxShadow: <BoxShadow>[
-              //   BoxShadow(
-              //     color: colorScheme.background.withOpacity(0.5),
-              //     blurRadius: 5,
-              //   ),
-              // ],
+              // // border: Border(
+              // //   top: BorderSide(
+              // //     color: Color(0xff272731),
+              // //     // color: Color(0xff222430),
+              // //   ),
+              // // ),
               ),
+          height: 60,
           child: BottomNavigationBar(
             elevation: 0,
             showSelectedLabels: false,
             showUnselectedLabels: false,
             currentIndex: page,
             selectedItemColor: colorScheme.primary,
-            unselectedItemColor: colorScheme.onSecondary,
+            unselectedItemColor: colorScheme.secondary,
+            // unselectedItemColor: Color(0xff55556c),
+            // unselectedItemColor: colorScheme.onSecondary,
             backgroundColor: colorScheme.onBackground,
             type: BottomNavigationBarType.fixed,
             onTap: (index) {

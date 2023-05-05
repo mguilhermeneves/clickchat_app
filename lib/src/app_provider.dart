@@ -1,3 +1,7 @@
+import 'package:clickchat_app/src/features/chats/pages/chats/chats_controller.dart';
+import 'package:clickchat_app/src/features/contacts/pages/contacts/contacts_controller.dart';
+import 'package:flutter/material.dart';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:provider/provider.dart';
 
@@ -11,3 +15,10 @@ final appProvider = [
   ),
   ChangeNotifierProvider(create: (context) => AuthService(context.read())),
 ];
+
+class AppProvider {
+  static void disposeValues(BuildContext context) {
+    Provider.of<ChatsController>(context, listen: false).disposeValue();
+    Provider.of<ContactsController>(context, listen: false).disposeValue();
+  }
+}
