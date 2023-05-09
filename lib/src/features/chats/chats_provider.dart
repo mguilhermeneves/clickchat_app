@@ -2,6 +2,7 @@ import 'package:provider/provider.dart';
 
 import 'pages/chats/chats_controller.dart';
 import 'pages/messages/messages_controller.dart';
+import 'pages/new_chat/new_chat_controller.dart';
 import 'repositories/chat_repository.dart';
 import 'repositories/message_repository.dart';
 import 'usecases/get_all_chats.dart';
@@ -52,5 +53,8 @@ final chatsProvider = [
       context.read(),
       context.read(),
     ),
+  ),
+  ChangeNotifierProvider(
+    create: (context) => NewChatController(context.read()),
   ),
 ];

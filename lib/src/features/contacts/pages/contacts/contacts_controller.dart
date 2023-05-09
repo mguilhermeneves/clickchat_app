@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
+import 'package:clickchat_app/src/global/models/contact_model.dart';
+import 'package:clickchat_app/src/global/states/contacts_state.dart';
 import 'package:clickchat_app/src/global/helpers/value_disposable.dart';
 import 'package:clickchat_app/src/global/usecases/get_all_contacts.dart';
 import 'package:clickchat_app/src/global/helpers/app.dart';
 
-import '../../../../global/models/contact_model.dart';
-import '../../states/contacts_state.dart';
 import '../../usecases/add_contact.dart';
 import '../../usecases/delete_contact.dart';
 
@@ -18,8 +18,10 @@ class ContactsController extends ValueNotifier<ContactsState>
   final deleteLoading = ValueNotifier<bool>(false);
 
   ContactsController(
-      this._getAllContacts, this._addContact, this._deleteContact)
-      : super(ContactsState.initial());
+    this._getAllContacts,
+    this._addContact,
+    this._deleteContact,
+  ) : super(ContactsState.initial());
 
   void init() {
     if (value.isSuccess) return;
