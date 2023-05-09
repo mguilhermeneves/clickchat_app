@@ -36,6 +36,12 @@ class AddContact implements IAddContact {
         return Result.error('Não existe uma conta criada com esse e-mail.');
       }
 
+      if (user.id == _authService.userId) {
+        return Result.error(
+          'Não é permitido adicionar você mesmo como contato.',
+        );
+      }
+
       final ContactModel? contactAdded =
           await _contactRepository.getByUserId(user.id, _authService.userId);
       if (contactAdded != null) {
