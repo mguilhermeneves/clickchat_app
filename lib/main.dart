@@ -1,3 +1,4 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 
 import 'package:firebase_core/firebase_core.dart';
@@ -7,7 +8,7 @@ import 'firebase_options.dart';
 import 'src/app_widget.dart';
 
 void main() async {
-  // Para garantir que o firebase vai inicializar antes do runApp
+  /// Para garantir que o firebase vai inicializar antes do runApp
   WidgetsFlutterBinding.ensureInitialized();
 
   SystemChrome.setSystemUIOverlayStyle(
@@ -21,4 +22,14 @@ void main() async {
   );
 
   runApp(const AppWidget());
+}
+
+/// top-level método, usado por NotificationService._configureBackground()
+Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+
+  print("=====================Background=========================");
+  print(message.notification?.title);
+  print(message.notification?.body);
+  print("========================================================");
 }

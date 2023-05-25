@@ -9,6 +9,7 @@ import 'package:clickchat_app/src/features/contacts/pages/contacts/contacts_cont
 import 'global/repositories/contact_repository.dart';
 import 'global/repositories/user_repository.dart';
 import 'global/services/auth_service.dart';
+import 'global/services/notification_service.dart';
 import 'global/usecases/get_all_contacts.dart';
 
 final appProvider = [
@@ -23,11 +24,13 @@ final appProvider = [
   Provider<IGetAllContacts>(
     create: (context) => GetAllContacts(context.read(), context.read()),
   ),
+  Provider(create: (context) => NotificationService(context.read())),
 ];
 
 class AppProvider {
   static void disposeValues(BuildContext context) {
     Provider.of<ChatsController>(context, listen: false).disposeValue();
     Provider.of<ContactsController>(context, listen: false).disposeValue();
+    Provider.of<NotificationService>(context, listen: false).disposeValue();
   }
 }

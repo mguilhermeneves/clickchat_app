@@ -1,15 +1,16 @@
-import 'package:clickchat_app/src/features/chats/chats_provider.dart';
-import 'package:clickchat_app/src/features/chats/models/chat_model.dart';
-import 'package:clickchat_app/src/features/chats/pages/messages/messages_page.dart';
-import 'package:clickchat_app/src/features/chats/pages/new_chat/new_chat_page.dart';
-import 'package:clickchat_app/src/features/contacts/contacts_provider.dart';
 import 'package:flutter/material.dart';
 
 import 'package:provider/provider.dart';
 
-import 'app_provider.dart';
 import 'features/auth/auth_provider.dart';
+import 'features/auth/pages/login/login_page.dart';
 import 'features/auth/pages/signup/signup_page.dart';
+import 'features/chats/chats_provider.dart';
+import 'features/chats/models/chat_model.dart';
+import 'features/chats/pages/messages/messages_page.dart';
+import 'features/chats/pages/new_chat/new_chat_page.dart';
+import 'features/contacts/contacts_provider.dart';
+import 'app_provider.dart';
 import 'global/theme/app_theme.dart';
 import 'app_page.dart';
 
@@ -41,6 +42,7 @@ class AppWidget extends StatelessWidget {
           '/page': (context) => AppPage(
                 page: ModalRoute.of(context)!.settings.arguments as int,
               ),
+          '/login': (_) => const LoginPage(),
           '/signup': (_) => const SignupPage(),
           '/chat-messages': (context) => MessagesPage(
                 chat: ModalRoute.of(context)!.settings.arguments as ChatModel,

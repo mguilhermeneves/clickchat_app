@@ -1,16 +1,14 @@
-import 'package:clickchat_app/src/app_provider.dart';
-import 'package:clickchat_app/src/features/auth/pages/login/login_page.dart';
-import 'package:clickchat_app/src/features/chats/pages/chats/chats_controller.dart';
+import 'package:flutter/material.dart';
+
+import 'package:iconsax/iconsax.dart';
+import 'package:provider/provider.dart';
+
 import 'package:clickchat_app/src/features/chats/pages/chats/chats_page.dart';
 import 'package:clickchat_app/src/features/contacts/pages/contacts/contacts_page.dart';
 import 'package:clickchat_app/src/global/theme/extensions/icon_extension.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:iconsax/iconsax.dart';
-
-import 'package:provider/provider.dart';
 
 import 'global/services/auth_service.dart';
+import 'global/services/notification_service.dart';
 
 class AppPage extends StatefulWidget {
   final int? page;
@@ -28,12 +26,27 @@ class _AppPageState extends State<AppPage> {
   );
 
   @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final auth = context.read<AuthService>();
+      if (!auth.signedIn) {
+        Navigator.of(context).pushReplacementNamed('/login');
+      } else {
+        context.read<NotificationService>().initialize();
+      }
+    });
+
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final auth = context.watch<AuthService>();
     final colorScheme = Theme.of(context).colorScheme;
 
+    /// Mostra temporariamente até chamar [addPostFrameCallback] no [initState].
     if (!auth.signedIn) {
-      return const LoginPage();
+      return Container(color: colorScheme.background);
     }
 
     return Scaffold(

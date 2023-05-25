@@ -22,7 +22,9 @@ class LoginController {
 
     await loginStore.signIn(login);
 
-    if (loginState.isError) {
+    if (loginState.isSuccess) {
+      App.to.pushReplacementNamed('/');
+    } else {
       App.dialog.alert(loginState.asError.message);
     }
   }

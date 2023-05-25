@@ -7,7 +7,9 @@ import '../models/user_model.dart';
 
 abstract class IUserRepository {
   Future<void> add(UserModel user);
+  Future<void> saveToken(String token, String userId);
   Future<UserModel?> getByEmail(String email);
+  Future<List<String>> getTokens(String userId);
 }
 
 class UserRepository implements IUserRepository {
@@ -21,7 +23,21 @@ class UserRepository implements IUserRepository {
       await _firestore
           .collection(FirestoreConstant.collectionUsers)
           .doc(user.id)
-          .set({'email': user.email});
+          .set({'email': user.email, 'messasingTokens': []});
+    } catch (e) {
+      throw RepositoryException(e.toString());
+    }
+  }
+
+  @override
+  Future<void> saveToken(String token, String userId) async {
+    try {
+      await _firestore
+          .collection(FirestoreConstant.collectionUsers)
+          .doc(userId)
+          .update({
+        'messasingTokens': FieldValue.arrayUnion([token])
+      });
     } catch (e) {
       throw RepositoryException(e.toString());
     }
@@ -43,6 +59,22 @@ class UserRepository implements IUserRepository {
         'id': user.id,
         ...user.data(),
       });
+    } catch (e) {
+      throw RepositoryException(e.toString());
+    }
+  }
+
+  @override
+  Future<List<String>> getTokens(String userId) async {
+    try {
+      final doc = await _firestore
+          .collection(FirestoreConstant.collectionUsers)
+          .doc(userId)
+          .get();
+
+      var tokens = doc.data()!['messasingTokens'].cast<String>();
+
+      return tokens;
     } catch (e) {
       throw RepositoryException(e.toString());
     }

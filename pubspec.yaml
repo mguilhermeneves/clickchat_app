@@ -38,8 +38,11 @@ dependencies:
   firebase_core: ^2.8.0
   firebase_auth: ^4.3.0
   cloud_firestore: ^4.4.5
+  firebase_messaging: ^14.6.0
   iconsax: ^0.0.8
   provider: ^6.0.5
+  flutter_local_notifications: ^14.0.0+2
+  http: ^0.13.6
 
 dev_dependencies:
   flutter_test:

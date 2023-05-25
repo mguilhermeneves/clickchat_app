@@ -30,7 +30,12 @@ final chatsProvider = [
     create: (context) => GetAllMessages(context.read(), context.read()),
   ),
   Provider<ISendMessage>(
-    create: (context) => SendMessage(context.read(), context.read()),
+    create: (context) => SendMessage(
+      context.read(),
+      context.read(),
+      context.read(),
+      context.read(),
+    ),
   ),
   Provider<IRemoveMessage>(
     create: (context) => RemoveMessage(context.read(), context.read()),
@@ -46,6 +51,7 @@ final chatsProvider = [
   ),
   ChangeNotifierProvider(
     create: (context) => MessagesController(
+      context.read(),
       context.read(),
       context.read(),
       context.read(),

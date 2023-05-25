@@ -1,3 +1,4 @@
+import 'package:clickchat_app/src/global/services/notification_service.dart';
 import 'package:flutter/material.dart';
 
 import 'package:clickchat_app/src/features/chats/usecases/remove_chat.dart';
@@ -13,6 +14,7 @@ import '../../usecases/get_chat.dart';
 
 class MessagesController extends ValueNotifier<MessagesState> {
   final AuthService _authService;
+  final NotificationService _notificationService;
   final IGetAllMessages _getAllMessages;
   final ISendMessage _sendMessage;
   final IGetChat _getChat;
@@ -27,6 +29,7 @@ class MessagesController extends ValueNotifier<MessagesState> {
 
   MessagesController(
     this._authService,
+    this._notificationService,
     this._getAllMessages,
     this._sendMessage,
     this._getChat,
@@ -36,6 +39,8 @@ class MessagesController extends ValueNotifier<MessagesState> {
 
   void init(ChatModel chatModel) {
     chat = chatModel;
+
+    _notificationService.setChatId(chat.id);
 
     _getAll();
   }
@@ -83,7 +88,7 @@ class MessagesController extends ValueNotifier<MessagesState> {
   Future<bool> send(String text) async {
     sendLoading.value = true;
 
-    final result = await _sendMessage.call(chat.id, text);
+    final result = await _sendMessage.call(chat, text);
 
     sendLoading.value = false;
 
@@ -105,5 +110,11 @@ class MessagesController extends ValueNotifier<MessagesState> {
     } else {
       value = MessagesState.error(result.error!);
     }
+  }
+
+  Future<bool> disposeChatId() async {
+    _notificationService.setChatId(null);
+
+    return true;
   }
 }

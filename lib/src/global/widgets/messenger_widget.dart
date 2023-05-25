@@ -24,20 +24,22 @@ class Messenger extends StatelessWidget {
         vertical: 30,
         horizontal: 50,
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          if (alert)
-            Image.asset(
-              'assets/images/illustrations/warning_illustration.png',
-              width: 200,
-            ),
-          if (alert) const SizedBox(height: 30),
-          Text(message, textAlign: TextAlign.center),
-          if (action != null) const SizedBox(height: 10),
-          if (action != null) action!,
-        ],
+      child: Center(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            if (alert)
+              Image.asset(
+                'assets/images/illustrations/warning_illustration.png',
+                width: 200,
+              ),
+            if (alert) const SizedBox(height: 30),
+            Text(message, textAlign: TextAlign.center),
+            if (action != null) const SizedBox(height: 10),
+            if (action != null) action!,
+          ],
+        ),
       ),
     );
   }

@@ -6,6 +6,7 @@ import 'package:clickchat_app/src/global/models/user_model.dart';
 import 'package:clickchat_app/src/global/repositories/user_repository.dart';
 
 import '../../app_provider.dart';
+import '../helpers/app.dart';
 import '../helpers/result.dart';
 
 class AuthService extends ChangeNotifier {
@@ -54,10 +55,12 @@ class AuthService extends ChangeNotifier {
 
   Future<Result> signIn(String email, String password) async {
     try {
-      await _auth.signInWithEmailAndPassword(
+      final UserCredential credentials = await _auth.signInWithEmailAndPassword(
         email: email.trim(),
         password: password.trim(),
       );
+
+      user = credentials.user;
 
       return Result.ok();
     } on FirebaseAuthException catch (e) {
@@ -68,10 +71,31 @@ class AuthService extends ChangeNotifier {
     }
   }
 
+  Future<Result> saveToken(String? token) async {
+    if (!signedIn) {
+      return Result.error('Sua conta está desconectada.');
+    }
+
+    if (token == null || token.isEmpty) {
+      return Result.error('O token não pode ser nulo ou vazio.');
+    }
+
+    try {
+      await _userRepository.saveToken(token, userId);
+      return Result.ok();
+    } catch (e) {
+      return Result.error(
+        'Ocorreu um problema inesperado ao salvar o token na base de dados. Aguarde alguns instantes e tente novamente.',
+      );
+    }
+  }
+
   Future<void> signOut(BuildContext context) async {
     AppProvider.disposeValues(context);
 
     await _auth.signOut();
+
+    App.to.pushReplacementNamed('/login');
   }
 
   String? _getFirebaseAuthExceptioMessage(FirebaseAuthException exception) {

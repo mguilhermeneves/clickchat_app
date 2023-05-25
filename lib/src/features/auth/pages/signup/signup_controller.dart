@@ -22,12 +22,10 @@ class SignupController {
 
     await signupStore.createUser(signup);
 
-    if (signupState.isError) {
-      App.dialog.alert(signupState.asError.message);
-    }
-
     if (signupState.isSuccess) {
-      App.to.pop();
+      App.to.popAndPushReplacementNamed('/');
+    } else {
+      App.dialog.alert(signupState.asError.message);
     }
   }
 }
