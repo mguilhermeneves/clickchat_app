@@ -71,27 +71,8 @@ class AuthService extends ChangeNotifier {
     }
   }
 
-  Future<Result> saveToken(String? token) async {
-    if (!signedIn) {
-      return Result.error('Sua conta está desconectada.');
-    }
-
-    if (token == null || token.isEmpty) {
-      return Result.error('O token não pode ser nulo ou vazio.');
-    }
-
-    try {
-      await _userRepository.saveToken(token, userId);
-      return Result.ok();
-    } catch (e) {
-      return Result.error(
-        'Ocorreu um problema inesperado ao salvar o token na base de dados. Aguarde alguns instantes e tente novamente.',
-      );
-    }
-  }
-
   Future<void> signOut(BuildContext context) async {
-    AppProvider.disposeValues(context);
+    await AppProvider.disposeValues(context);
 
     await _auth.signOut();
 

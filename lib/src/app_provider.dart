@@ -3,9 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:provider/provider.dart';
 
-import 'package:clickchat_app/src/features/chats/pages/chats/chats_controller.dart';
-import 'package:clickchat_app/src/features/contacts/pages/contacts/contacts_controller.dart';
-
+import 'features/chats/pages/chats/chats_controller.dart';
+import 'features/contacts/pages/contacts/contacts_controller.dart';
 import 'global/repositories/contact_repository.dart';
 import 'global/repositories/user_repository.dart';
 import 'global/services/auth_service.dart';
@@ -24,13 +23,19 @@ final appProvider = [
   Provider<IGetAllContacts>(
     create: (context) => GetAllContacts(context.read(), context.read()),
   ),
-  Provider(create: (context) => NotificationService(context.read())),
+  Provider(
+      create: (context) => NotificationService(context.read(), context.read())),
 ];
 
 class AppProvider {
-  static void disposeValues(BuildContext context) {
-    Provider.of<ChatsController>(context, listen: false).disposeValue();
-    Provider.of<ContactsController>(context, listen: false).disposeValue();
-    Provider.of<NotificationService>(context, listen: false).disposeValue();
+  /// Utilizado no AuthService.signOut()
+  static Future<void> disposeValues(BuildContext context) async {
+    context.read<ContactsController>().disposeValue();
+    context.read<ChatsController>().disposeValue();
+
+    /// Aguarda [disposeValue] de [NotificationService] pq ele conecta com
+    /// firestore para apagar o token. Quando ocorre [signOut] antes, da erro
+    /// de permissão no firestore.
+    await context.read<NotificationService>().disposeValue();
   }
 }

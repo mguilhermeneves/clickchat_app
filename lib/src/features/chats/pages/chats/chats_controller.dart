@@ -49,7 +49,7 @@ class ChatsController extends ValueNotifier<ChatsState>
   }
 
   @override
-  void disposeValue() {
+  Future<void> disposeValue() async {
     value = ChatsState.initial();
   }
 }

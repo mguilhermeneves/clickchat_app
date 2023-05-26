@@ -29,7 +29,7 @@ class NewChatController extends ValueNotifier<ContactsState>
   }
 
   @override
-  void disposeValue() {
+  Future<void> disposeValue() async {
     value = ContactsState.initial();
   }
 }

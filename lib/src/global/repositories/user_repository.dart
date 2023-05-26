@@ -10,6 +10,7 @@ abstract class IUserRepository {
   Future<void> saveToken(String token, String userId);
   Future<UserModel?> getByEmail(String email);
   Future<List<String>> getTokens(String userId);
+  Future<void> deleteToken(String token, String userId);
 }
 
 class UserRepository implements IUserRepository {
@@ -44,20 +45,13 @@ class UserRepository implements IUserRepository {
   }
 
   @override
-  Future<UserModel?> getByEmail(String email) async {
+  Future<void> deleteToken(String token, String userId) async {
     try {
-      final users = await _firestore
+      await _firestore
           .collection(FirestoreConstant.collectionUsers)
-          .where('email', isEqualTo: email)
-          .get();
-
-      if (users.docs.isEmpty) return null;
-
-      final user = users.docs.first;
-
-      return UserModel.fromJson({
-        'id': user.id,
-        ...user.data(),
+          .doc(userId)
+          .update({
+        'messasingTokens': FieldValue.arrayRemove([token])
       });
     } catch (e) {
       throw RepositoryException(e.toString());
@@ -75,6 +69,27 @@ class UserRepository implements IUserRepository {
       var tokens = doc.data()!['messasingTokens'].cast<String>();
 
       return tokens;
+    } catch (e) {
+      throw RepositoryException(e.toString());
+    }
+  }
+
+  @override
+  Future<UserModel?> getByEmail(String email) async {
+    try {
+      final users = await _firestore
+          .collection(FirestoreConstant.collectionUsers)
+          .where('email', isEqualTo: email)
+          .get();
+
+      if (users.docs.isEmpty) return null;
+
+      final user = users.docs.first;
+
+      return UserModel.fromJson({
+        'id': user.id,
+        ...user.data(),
+      });
     } catch (e) {
       throw RepositoryException(e.toString());
     }

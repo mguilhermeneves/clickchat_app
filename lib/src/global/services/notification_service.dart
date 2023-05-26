@@ -10,10 +10,12 @@ import '../../../main.dart';
 import '../constants/cloud_messasing_constant.dart';
 import '../helpers/result.dart';
 import '../helpers/value_disposable.dart';
+import '../repositories/user_repository.dart';
 import 'auth_service.dart';
 
 class NotificationService implements ValueDisposable {
   final AuthService _authService;
+  final IUserRepository _userRepository;
   final _messaging = FirebaseMessaging.instance;
   late FlutterLocalNotificationsPlugin _localNotificationsPlugin;
   late AndroidNotificationChannel _channel;
@@ -22,14 +24,14 @@ class NotificationService implements ValueDisposable {
   bool _notificationsInitialized = false;
   String? _chatId;
 
-  NotificationService(this._authService);
+  NotificationService(this._authService, this._userRepository);
 
   Future<void> initialize() async {
     if (_notificationsInitialized) return;
 
     if (!await _hasPermission()) return;
 
-    await _saveToken();
+    await _getToken();
 
     await _setupAndroidNotificationChannel();
 
@@ -154,17 +156,27 @@ class NotificationService implements ValueDisposable {
     return settings.authorizationStatus == AuthorizationStatus.authorized;
   }
 
-  Future<void> _saveToken() async {
-    String? token = await _messaging.getToken();
+  Future<void> _getToken() async {
+    try {
+      String? token = await _messaging.getToken();
 
-    await _authService.saveToken(token);
+      await _saveToken(token);
 
-    _onTokenRefresh?.cancel();
-    _onTokenRefresh = _messaging.onTokenRefresh.listen(_authService.saveToken);
+      _onTokenRefresh?.cancel();
+      _onTokenRefresh = _messaging.onTokenRefresh.listen(_saveToken);
 
-    print("=====================Token=========================");
-    print(token);
-    print("===================================================");
+      print("=====================Token=========================");
+      print(token);
+      print("===================================================");
+    } catch (e) {
+      // TODO: Tratar erro ao obter token
+    }
+  }
+
+  Future<void> _saveToken(String? token) async {
+    if (token == null || token.isEmpty || !_authService.signedIn) return;
+
+    await _userRepository.saveToken(token, _authService.userId);
   }
 
   Future<void> _setupAndroidNotificationChannel() async {
@@ -192,10 +204,25 @@ class NotificationService implements ValueDisposable {
     );
   }
 
+  Future<void> _deleteToken() async {
+    try {
+      String? token = await _messaging.getToken();
+
+      if (token != null && _authService.signedIn) {
+        await _userRepository.deleteToken(token, _authService.userId);
+      }
+
+      await _messaging.deleteToken();
+    } catch (e) {
+      // TODO: Tratar erro ao excluir token.
+    }
+  }
+
   @override
-  void disposeValue() {
+  Future<void> disposeValue() async {
     _notificationsInitialized = false;
     _onTokenRefresh?.cancel();
     _onMessage?.cancel();
+    await _deleteToken();
   }
 }
