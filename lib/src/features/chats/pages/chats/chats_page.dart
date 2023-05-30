@@ -1,3 +1,4 @@
+import 'package:clickchat_app/src/global/helpers/app.dart';
 import 'package:flutter/material.dart';
 
 import 'package:provider/provider.dart';

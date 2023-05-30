@@ -8,6 +8,7 @@ import 'package:http/http.dart';
 
 import '../../../main.dart';
 import '../constants/cloud_messasing_constant.dart';
+import '../helpers/app.dart';
 import '../helpers/result.dart';
 import '../helpers/value_disposable.dart';
 import '../repositories/user_repository.dart';
@@ -19,8 +20,9 @@ class NotificationService implements ValueDisposable {
   final _messaging = FirebaseMessaging.instance;
   late FlutterLocalNotificationsPlugin _localNotificationsPlugin;
   late AndroidNotificationChannel _channel;
-  StreamSubscription<String>? _onTokenRefresh;
-  StreamSubscription<RemoteMessage>? _onMessage;
+  StreamSubscription<String>? _onTokenRefreshSubscription;
+  StreamSubscription<RemoteMessage>? _onMessageSubscription;
+  StreamSubscription<RemoteMessage>? _onMessageOpenedAppSubscription;
   bool _notificationsInitialized = false;
   String? _chatId;
 
@@ -35,14 +37,16 @@ class NotificationService implements ValueDisposable {
 
     await _setupAndroidNotificationChannel();
 
-    /// Atualize as opções de apresentação de notificação de foreground do iOS para permitir
-    /// alerta as notificações.
+    /// Atualize as opções de apresentação de notificação de foreground do iOS
+    /// para permitir alerta as notificações.
     await FirebaseMessaging.instance
         .setForegroundNotificationPresentationOptions(
       alert: true,
       badge: true,
       sound: true,
     );
+
+    await _configureInteractedMessage();
 
     _configureBackground();
 
@@ -97,22 +101,43 @@ class NotificationService implements ValueDisposable {
     }
   }
 
+  /// Trata interações dos usuários com as notificações (pressionando-os)
+  Future<void> _configureInteractedMessage() async {
+    /// Obtém todas as mensagens que causaram a abertura do aplicativo de
+    /// um estado finalizado.
+    RemoteMessage? initialMessage =
+        await FirebaseMessaging.instance.getInitialMessage();
+
+    if (initialMessage != null) {
+      _interactedMessageHandler(initialMessage);
+    }
+
+    _onMessageOpenedAppSubscription?.cancel();
+
+    /// Também lida com qualquer interação quando o aplicativo está em segundo
+    /// plano por meio de um ouvinte do stream.
+    _onMessageOpenedAppSubscription =
+        FirebaseMessaging.onMessageOpenedApp.listen(_interactedMessageHandler);
+  }
+
+  void _interactedMessageHandler(RemoteMessage message) {
+    if (message.data['type'] == 'chat') {
+      var userIdSender = message.data['userIdSender'];
+
+      _toPageChat(userIdSender);
+    }
+  }
+
+  /// Mostra notificações em segundo plano e quando o app está em estado terminado.
   void _configureBackground() {
     FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
   }
 
+  /// Mostra notificações em primeiro plano
   void _configureForeground() {
-    _onMessage?.cancel();
-    _onMessage = FirebaseMessaging.onMessage.listen(
-      (RemoteMessage message) async {
-        _showLocalNotificationAndroid(message);
-
-        print("=====================Foreground=========================");
-        print(message.notification?.title);
-        print(message.notification?.body);
-        print("========================================================");
-      },
-    );
+    _onMessageSubscription?.cancel();
+    _onMessageSubscription =
+        FirebaseMessaging.onMessage.listen(_showLocalNotificationAndroid);
   }
 
   void _showLocalNotificationAndroid(RemoteMessage message) {
@@ -121,11 +146,16 @@ class NotificationService implements ValueDisposable {
 
     if (notification == null || android == null) return;
 
-    var chatId = message.data['chatId'];
+    String? payload;
 
-    /// Se [_chatId] e [chatId] é igual, não mostra a notificação pq o usuário
-    /// está na tela de mensagens do [chatId].
-    if (_chatId != null && _chatId == chatId) return;
+    if (message.data['type'] == 'chat') {
+      /// Se [_chatId] e [message.data['chatId']] é igual, não mostra a
+      /// notificação pq o usuário está na tela de mensagens do [chatId].
+      if (_chatId != null && _chatId == message.data['chatId']) return;
+
+      var userIdSender = message.data['userIdSender'];
+      payload = '/chat-messages/user?$userIdSender';
+    }
 
     _localNotificationsPlugin.show(
       notification.hashCode,
@@ -139,6 +169,7 @@ class NotificationService implements ValueDisposable {
           icon: android.smallIcon,
         ),
       ),
+      payload: payload,
     );
   }
 
@@ -162,12 +193,9 @@ class NotificationService implements ValueDisposable {
 
       await _saveToken(token);
 
-      _onTokenRefresh?.cancel();
-      _onTokenRefresh = _messaging.onTokenRefresh.listen(_saveToken);
-
-      print("=====================Token=========================");
-      print(token);
-      print("===================================================");
+      _onTokenRefreshSubscription?.cancel();
+      _onTokenRefreshSubscription =
+          _messaging.onTokenRefresh.listen(_saveToken);
     } catch (e) {
       // TODO: Tratar erro ao obter token
     }
@@ -201,7 +229,29 @@ class NotificationService implements ValueDisposable {
       const InitializationSettings(
         android: AndroidInitializationSettings('@mipmap/ic_launcher'),
       ),
+      onDidReceiveNotificationResponse: (response) {
+        if (response.payload?.contains('/chat-messages/user?') ?? false) {
+          var userIdSender =
+              response.payload!.replaceAll('/chat-messages/user?', '');
+
+          _toPageChat(userIdSender);
+        }
+      },
     );
+  }
+
+  void _toPageChat(String userIdSender) {
+    if (_chatId != null) {
+      App.to.pushReplacementNamed(
+        '/chat-messages/user',
+        arguments: userIdSender,
+      );
+    } else {
+      App.to.pushNamed(
+        '/chat-messages/user',
+        arguments: userIdSender,
+      );
+    }
   }
 
   Future<void> _deleteToken() async {
@@ -221,8 +271,13 @@ class NotificationService implements ValueDisposable {
   @override
   Future<void> disposeValue() async {
     _notificationsInitialized = false;
-    _onTokenRefresh?.cancel();
-    _onMessage?.cancel();
+
+    _onTokenRefreshSubscription?.cancel();
+
+    _onMessageSubscription?.cancel();
+
+    _onMessageOpenedAppSubscription?.cancel();
+
     await _deleteToken();
   }
 }

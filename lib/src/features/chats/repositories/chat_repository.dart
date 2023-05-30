@@ -21,8 +21,8 @@ class ChatRepository implements IChatRepository {
 
   ChatRepository(this._firestore);
 
-  /// Retornar uma chat existe. Caso não tenha um chat entre os usuários, é
-  /// criado um novo.
+  /// Retorna um chat existente. Caso não tenha um chat entre os usuários, é
+  /// criado um.
   @override
   Future<ChatModel> get(String userId, String requestedByUserId) async {
     try {

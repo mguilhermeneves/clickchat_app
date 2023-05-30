@@ -6,6 +6,8 @@ import '../models/chat_model.dart';
 import '../repositories/chat_repository.dart';
 
 abstract class IGetChat {
+  /// Retorna um chat existente. Caso não tenha um chat entre os usuários, é
+  /// criado um.
   Future<ResultWith<ChatModel>> call(String userId);
 }
 

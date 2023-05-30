@@ -10,8 +10,15 @@ class Navigation {
     Navigator.of(context).pop(result);
   }
 
-  void pushReplacementNamed(String routeName) {
-    Navigator.of(context).pushReplacementNamed(routeName);
+  Future<T?> pushNamed<T extends Object?>(
+    String routeName, {
+    Object? arguments,
+  }) {
+    return Navigator.of(context).pushNamed<T?>(routeName, arguments: arguments);
+  }
+
+  void pushReplacementNamed(String routeName, {Object? arguments}) {
+    Navigator.of(context).pushReplacementNamed(routeName, arguments: arguments);
   }
 
   void popAndPushReplacementNamed(String routeName) {

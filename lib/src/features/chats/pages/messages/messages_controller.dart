@@ -45,7 +45,7 @@ class MessagesController extends ValueNotifier<MessagesState> {
     _getAll();
   }
 
-  Future<void> initNewChat(String userId) async {
+  Future<void> initByUserId(String userId) async {
     value = MessagesState.loading();
 
     final result = await _getChat.call(userId);

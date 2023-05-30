@@ -39,7 +39,7 @@ class _MessagesPageState extends State<MessagesPage> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final controller = context.read<MessagesController>();
       if (widget.chat == null) {
-        controller.initNewChat(widget.userId!);
+        controller.initByUserId(widget.userId!);
       } else {
         controller.init(widget.chat!);
       }

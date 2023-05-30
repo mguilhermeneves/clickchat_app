@@ -50,6 +50,9 @@ class AppWidget extends StatelessWidget {
           '/chat-messages/new': (context) => MessagesPage(
                 userId: ModalRoute.of(context)!.settings.arguments as String,
               ),
+          '/chat-messages/user': (context) => MessagesPage(
+                userId: ModalRoute.of(context)!.settings.arguments as String,
+              ),
           '/new-chat': (_) => const NewChatPage(),
         },
       ),

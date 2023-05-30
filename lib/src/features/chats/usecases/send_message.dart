@@ -54,7 +54,11 @@ class SendMessage implements ISendMessage {
           title: _authService.user!.displayName!,
           body: text,
           tokens: tokens,
-          data: {'chatId': chat.id},
+          data: {
+            'type': 'chat',
+            'chatId': chat.id,
+            'userIdSender': _authService.userId,
+          },
         );
       }
 

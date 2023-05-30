@@ -27,9 +27,4 @@ void main() async {
 /// top-level método, usado por NotificationService._configureBackground()
 Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-
-  print("=====================Background=========================");
-  print(message.notification?.title);
-  print(message.notification?.body);
-  print("========================================================");
 }
