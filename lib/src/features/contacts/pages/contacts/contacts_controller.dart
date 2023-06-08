@@ -8,19 +8,23 @@ import 'package:clickchat_app/src/global/helpers/app.dart';
 
 import '../../usecases/add_contact.dart';
 import '../../usecases/delete_contact.dart';
+import '../../usecases/update_contact.dart';
 
 class ContactsController extends ValueNotifier<ContactsState>
     implements ValueDisposable {
   final IGetAllContacts _getAllContacts;
   final IAddContact _addContact;
   final IDeleteContact _deleteContact;
+  final IUpdateContact _updateContact;
   final addLoading = ValueNotifier<bool>(false);
   final deleteLoading = ValueNotifier<bool>(false);
+  final editLoading = ValueNotifier<bool>(false);
 
   ContactsController(
     this._getAllContacts,
     this._addContact,
     this._deleteContact,
+    this._updateContact,
   ) : super(ContactsState.initial());
 
   void init() {
@@ -35,6 +39,20 @@ class ContactsController extends ValueNotifier<ContactsState>
     final result = await _addContact.call(contact);
 
     addLoading.value = false;
+
+    if (result.succeeded) {
+      App.to.pop();
+    } else {
+      App.dialog.alert(result.error!);
+    }
+  }
+
+  Future<void> update(String id, String name) async {
+    editLoading.value = true;
+
+    final result = await _updateContact.call(id, name);
+
+    editLoading.value = false;
 
     if (result.succeeded) {
       App.to.pop();

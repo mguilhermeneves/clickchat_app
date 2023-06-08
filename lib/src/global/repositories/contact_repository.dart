@@ -9,7 +9,7 @@ import '../models/contact_model.dart';
 abstract class IContactRepository {
   Future<void> add(ContactModel contact, String requestedByUserId);
 
-  Future<void> update(ContactModel contact, String requestedByUserId);
+  Future<void> update(String id, String name, String requestedByUserId);
 
   Future<void> delete(String id, String requestedByUserId);
 
@@ -37,14 +37,14 @@ class ContactRepository implements IContactRepository {
   }
 
   @override
-  Future<void> update(ContactModel contact, String requestedByUserId) async {
+  Future<void> update(String id, String name, String requestedByUserId) async {
     try {
       await _firestore
           .collection(FirestoreConstant.collectionUsers)
           .doc(requestedByUserId)
           .collection(FirestoreConstant.collectionContacts)
-          .doc(contact.id)
-          .update({'name': contact.name});
+          .doc(id)
+          .update({'name': name});
     } catch (e) {
       throw RepositoryException(e.toString());
     }

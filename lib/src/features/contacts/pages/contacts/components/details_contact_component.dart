@@ -1,3 +1,4 @@
+import 'package:clickchat_app/src/features/contacts/pages/contacts/components/edit_name_component.dart';
 import 'package:flutter/material.dart';
 
 import 'package:iconsax/iconsax.dart';
@@ -87,10 +88,20 @@ class _DetailsContactComponentState extends State<DetailsContactComponent> {
             children: [
               _buildAction(
                 iconData: Iconsax.edit_2,
-                labelText: 'Editar apelido',
+                labelText: 'Editar nome',
                 borderRadius:
                     const BorderRadius.vertical(top: Radius.circular(15)),
-                onTap: () {},
+                onTap: () {
+                  Navigator.pop(context);
+                  showModalBottomSheet(
+                    context: context,
+                    isScrollControlled: true,
+                    builder: (_) => EditNameComponent(
+                      id: widget.contact.id!,
+                      name: widget.contact.name!,
+                    ),
+                  );
+                },
               ),
               Divider(height: 1, thickness: 1, color: colorScheme.outline),
               ValueListenableBuilder(

@@ -50,11 +50,8 @@ void main() {
     });
 
     await contactRepository.update(
-      ContactModel(
-        id: '9djBWVfFgrMnCdh26QS0fKNkO3n0',
-        name: 'Pedro',
-        userId: '3djBWVDFgrMnCdh26QS0fKNkO3n1',
-      ),
+      '9djBWVfFgrMnCdh26QS0fKNkO3n0',
+      'Pedro',
       requestedByUserId,
     );
 
