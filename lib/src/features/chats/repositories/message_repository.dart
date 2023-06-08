@@ -13,7 +13,7 @@ abstract class IMessageRepository {
       String chatId, String messageId, String requestedByUserId);
 
   Future<Stream<List<MessageModel>>> getAll(
-      String chatId, String requestedByUserId);
+      String chatId, String requestedByUserId, int limit);
 }
 
 class MessageRepository implements IMessageRepository {
@@ -111,7 +111,7 @@ class MessageRepository implements IMessageRepository {
 
   @override
   Future<Stream<List<MessageModel>>> getAll(
-      String chatId, String requestedByUserId) async {
+      String chatId, String requestedByUserId, int limit) async {
     try {
       final chatRef =
           _firestore.collection(FirestoreConstant.collectionChats).doc(chatId);
@@ -131,6 +131,7 @@ class MessageRepository implements IMessageRepository {
           .collection(FirestoreConstant.collectionMessages)
           .where('userIdRemove', whereIn: ['', userId])
           .orderBy('dateTime', descending: true)
+          .limit(limit)
           .snapshots();
 
       return snapshots

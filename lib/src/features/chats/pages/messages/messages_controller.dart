@@ -1,6 +1,8 @@
-import 'package:clickchat_app/src/global/services/notification_service.dart';
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 
+import 'package:clickchat_app/src/global/services/notification_service.dart';
 import 'package:clickchat_app/src/features/chats/usecases/remove_chat.dart';
 import 'package:clickchat_app/src/features/chats/usecases/remove_message.dart';
 import 'package:clickchat_app/src/features/chats/usecases/send_message.dart';
@@ -8,6 +10,7 @@ import 'package:clickchat_app/src/global/helpers/app.dart';
 import 'package:clickchat_app/src/global/services/auth_service.dart';
 
 import '../../models/chat_model.dart';
+import '../../models/message_model.dart';
 import '../../states/messages_state.dart';
 import '../../usecases/get_all_messages.dart';
 import '../../usecases/get_chat.dart';
@@ -20,10 +23,16 @@ class MessagesController extends ValueNotifier<MessagesState> {
   final IGetChat _getChat;
   final IRemoveMessage _removeMessage;
   final IRemoveChat _removeChat;
-  late ChatModel chat;
   final sendLoading = ValueNotifier<bool>(false);
   final removeMessageLoading = ValueNotifier<bool>(false);
   final removeChatLoading = ValueNotifier<bool>(false);
+  final moreLoading = ValueNotifier<bool>(false);
+  late ScrollController scrollController;
+  late ChatModel chat;
+  bool _hasMore = true;
+  int _limit = _limitPerPage;
+
+  static const int _limitPerPage = 40;
 
   String get userId => _authService.userId;
 
@@ -37,10 +46,14 @@ class MessagesController extends ValueNotifier<MessagesState> {
     this._removeChat,
   ) : super(MessagesState.initial());
 
-  void init(ChatModel chatModel) {
+  late Stream<List<MessageModel>> stream;
+
+  void init(ChatModel chatModel) async {
     chat = chatModel;
 
     _notificationService.setChatId(chat.id);
+
+    scrollController = ScrollController()..addListener(_getMore);
 
     _getAll();
   }
@@ -55,6 +68,31 @@ class MessagesController extends ValueNotifier<MessagesState> {
     } else {
       value = MessagesState.error(result.error!);
     }
+  }
+
+  void setHasMore(int messageCount) {
+    if (messageCount < _limit) {
+      _hasMore = false;
+    } else {
+      _hasMore = true;
+    }
+  }
+
+  Future<void> _getMore() async {
+    double pixels = scrollController.position.pixels;
+    double maxScroll = scrollController.position.maxScrollExtent;
+
+    if (pixels != maxScroll || moreLoading.value || !_hasMore) return;
+
+    moreLoading.value = true;
+
+    await Future.delayed(const Duration(milliseconds: 500));
+
+    _limit += _limitPerPage;
+
+    await _getAll();
+
+    moreLoading.value = false;
   }
 
   Future<void> removeMessage(String messageId) async {
@@ -101,9 +139,11 @@ class MessagesController extends ValueNotifier<MessagesState> {
   }
 
   Future<void> _getAll() async {
-    value = MessagesState.loading();
+    if (!value.isSuccess) {
+      value = MessagesState.loading();
+    }
 
-    final result = await _getAllMessages.call(chat.id);
+    final result = await _getAllMessages.call(chat.id, _limit);
 
     if (result.succeeded) {
       value = MessagesState.success(result.data!);
@@ -113,7 +153,13 @@ class MessagesController extends ValueNotifier<MessagesState> {
   }
 
   Future<bool> disposeChatId() async {
+    value = MessagesState.initial();
+
     _notificationService.setChatId(null);
+
+    _limit = _limitPerPage;
+
+    _hasMore = true;
 
     return true;
   }

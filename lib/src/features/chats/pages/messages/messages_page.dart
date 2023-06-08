@@ -94,6 +94,10 @@ class _MessagesPageState extends State<MessagesPage> {
             icon: const Icon(Iconsax.arrow_left),
           ),
           actions: [
+            IconButton(
+              onPressed: () {},
+              icon: Icon(Icons.manage_search),
+            ),
             PopupMenuButton(
               icon: Transform.rotate(
                 angle: 90 * math.pi / 180,
@@ -149,21 +153,141 @@ class _MessagesPageState extends State<MessagesPage> {
                   );
                 }
 
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Container();
-                }
-
                 final messages = snapshot.data;
+                final messageCount = messages?.length ?? 0;
+
+                // return Column(
+                //   children: [
+                //     Expanded(
+                //       child: SingleChildScrollView(
+                //         physics: const BouncingScrollPhysics(),
+                //         controller: controller.scrollController,
+                //         reverse: true,
+                //         child: Column(
+                //           children: [
+                //             ValueListenableBuilder(
+                //               valueListenable: controller.moreLoading,
+                //               builder: (_, loading, child) {
+                //                 if (!loading) return Container();
+
+                //                 return const Row(
+                //                   mainAxisAlignment: MainAxisAlignment.center,
+                //                   children: [
+                //                     SizedBox(
+                //                       height: 20,
+                //                       width: 20,
+                //                       child: CircularProgressIndicator(),
+                //                     ),
+                //                   ],
+                //                 );
+                //               },
+                //             ),
+                //             ListView.builder(
+                //               shrinkWrap: true,
+                //               reverse: true,
+                //               physics: const NeverScrollableScrollPhysics(),
+                //               padding: const EdgeInsets.symmetric(vertical: 10),
+                //               itemCount: messageCount + 1,
+                //               itemBuilder: (_, index) {
+                //                 if (index == messageCount) {
+                //                   controller.setHasMore(messageCount);
+                //                   return Container();
+
+                //                   // return ValueListenableBuilder(
+                //                   //   valueListenable: controller.moreLoading,
+                //                   //   builder: (_, loading, child) {
+                //                   //     if (!loading) return Container();
+
+                //                   //     return const Row(
+                //                   //       mainAxisAlignment:
+                //                   //           MainAxisAlignment.center,
+                //                   //       children: [
+                //                   //         SizedBox(
+                //                   //           height: 20,
+                //                   //           width: 20,
+                //                   //           child: CircularProgressIndicator(),
+                //                   //         ),
+                //                   //       ],
+                //                   //     );
+                //                   //   },
+                //                   // );
+                //                 }
+
+                //                 final message = messages![index];
+                //                 final iSent =
+                //                     controller.userId == message.userIdSender;
+                //                 bool previousSender = false;
+                //                 DateTime? date;
+
+                //                 if ((index + 1) < messages.length) {
+                //                   final previousMessage = messages[index + 1];
+
+                //                   if (previousMessage.userIdSender ==
+                //                           message.userIdSender &&
+                //                       previousMessage.dateTime
+                //                           .dateEquals(message.dateTime)) {
+                //                     previousSender = true;
+                //                   }
+
+                //                   if (!previousMessage.dateTime
+                //                       .dateEquals(message.dateTime)) {
+                //                     date = message.dateTime;
+                //                   }
+                //                 } else {
+                //                   date = message.dateTime;
+                //                 }
+
+                //                 return Column(
+                //                   children: [
+                //                     DateComponent(date),
+                //                     MessageComponent(
+                //                       message: message,
+                //                       iSent: iSent,
+                //                       previousSender: previousSender,
+                //                     ),
+                //                   ],
+                //                 );
+                //               },
+                //             ),
+                //           ],
+                //         ),
+                //       ),
+                //     ),
+                //     const InputComponent(),
+                //   ],
+                // );
 
                 return Column(
                   children: [
                     Expanded(
                       child: ListView.builder(
                         reverse: true,
-                        physics: const BouncingScrollPhysics(),
+                        controller: controller.scrollController,
                         padding: const EdgeInsets.symmetric(vertical: 10),
-                        itemCount: messages?.length ?? 0,
+                        itemCount: messageCount + 1,
                         itemBuilder: (_, index) {
+                          if (index == messageCount) {
+                            controller.setHasMore(messageCount);
+
+                            return ValueListenableBuilder(
+                              valueListenable: controller.moreLoading,
+                              builder: (_, loading, child) {
+                                if (!loading) return Container();
+
+                                return const Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    SizedBox(
+                                      height: 20,
+                                      width: 20,
+                                      child: CircularProgressIndicator(),
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+                          }
+
                           final message = messages![index];
                           final iSent =
                               controller.userId == message.userIdSender;

@@ -142,7 +142,8 @@ void main() {
       'read': false,
     });
 
-    final stream = await messageRepository.getAll(chatId, requestedByUserId);
+    final stream =
+        await messageRepository.getAll(chatId, requestedByUserId, 10);
 
     final messages = await stream.first;
 
@@ -163,7 +164,8 @@ void main() {
       }
     });
 
-    final stream = await messageRepository.getAll(chatId, requestedByUserId);
+    final stream =
+        await messageRepository.getAll(chatId, requestedByUserId, 10);
 
     final messages = await stream.first;
 

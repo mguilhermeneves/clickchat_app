@@ -16,10 +16,12 @@ void main() {
     final messageRepository = MessageRepositoryMock();
     final getAllMessages = GetAllMessages(messageRepository, authService);
     const chatId = '3BjBWVDFgrMnCeh26QS0fKNkO3n1';
+    const limit = 10;
 
     when(() => authService.signedIn).thenReturn(true);
     when(() => authService.userId).thenReturn(requestedByUserId);
-    when(() => messageRepository.getAll(chatId, requestedByUserId)).thenAnswer(
+    when(() => messageRepository.getAll(chatId, requestedByUserId, limit))
+        .thenAnswer(
       (_) => Future.value(Stream.value([
         MessageModel(
           id: '',
@@ -38,7 +40,7 @@ void main() {
       ])),
     );
 
-    final result = await getAllMessages.call(chatId);
+    final result = await getAllMessages.call(chatId, limit);
     final messages = await result.data?.first;
 
     expect(result.succeeded, true);

@@ -6,7 +6,7 @@ import '../models/message_model.dart';
 import '../repositories/message_repository.dart';
 
 abstract class IGetAllMessages {
-  Future<ResultWith<Stream<List<MessageModel>>>> call(String chatId);
+  Future<ResultWith<Stream<List<MessageModel>>>> call(String chatId, int limit);
 }
 
 class GetAllMessages implements IGetAllMessages {
@@ -16,7 +16,8 @@ class GetAllMessages implements IGetAllMessages {
   GetAllMessages(this._messageRepository, this._authService);
 
   @override
-  Future<ResultWith<Stream<List<MessageModel>>>> call(String chatId) async {
+  Future<ResultWith<Stream<List<MessageModel>>>> call(
+      String chatId, int limit) async {
     if (!_authService.signedIn) {
       return ResultWith.error('Sua conta está desconectada.');
     }
@@ -27,7 +28,7 @@ class GetAllMessages implements IGetAllMessages {
 
     try {
       final messages =
-          await _messageRepository.getAll(chatId, _authService.userId);
+          await _messageRepository.getAll(chatId, _authService.userId, limit);
 
       return ResultWith.ok(messages);
     } on RepositoryException catch (_) {
