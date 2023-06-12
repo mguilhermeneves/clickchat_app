@@ -60,7 +60,7 @@ class _ChatComponentState extends State<ChatComponent> {
                 children: [
                   Avatar(
                     letter: contact.name ?? contact.email!,
-                    imageUrl: contact.userImageUrl,
+                    imageUrl: contact.userProfilePictureUrl,
                     size: 26,
                   ),
                   buildStampSelection(),

@@ -1,3 +1,4 @@
+import 'package:clickchat_app/src/features/profile/profile_provider.dart';
 import 'package:flutter/material.dart';
 
 import 'package:provider/provider.dart';
@@ -28,6 +29,7 @@ class AppWidget extends StatelessWidget {
         ...authProvider,
         ...contactsProvider,
         ...chatsProvider,
+        ...profileProvider,
       ],
       child: MaterialApp(
         title: 'clickchat',

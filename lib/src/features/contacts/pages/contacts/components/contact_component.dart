@@ -36,7 +36,7 @@ class ContactComponent extends StatelessWidget {
               children: [
                 Avatar(
                   letter: contact.name!,
-                  imageUrl: contact.userImageUrl,
+                  imageUrl: contact.userProfilePictureUrl,
                   size: 20,
                 ),
                 const SizedBox(width: 15),

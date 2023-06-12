@@ -1,3 +1,4 @@
+import 'package:clickchat_app/src/features/profile/pages/profile/profile_page.dart';
 import 'package:flutter/material.dart';
 
 import 'package:iconsax/iconsax.dart';
@@ -56,31 +57,7 @@ class _AppPageState extends State<AppPage> {
         children: [
           ChatsPage(),
           ContactsPage(),
-          //! temp
-          Scaffold(
-            body: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Text('App Page'),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Text(auth.user?.displayName ?? 'Sem nome'),
-                  Text(auth.user?.uid ?? ''),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  ElevatedButton(
-                    onPressed: () {
-                      auth.signOut(context);
-                    },
-                    child: const Text('Sair'),
-                  ),
-                ],
-              ),
-            ),
-          ),
+          ProfilePage(),
         ],
       ),
       // bottomNavigationBar: Container(
@@ -170,10 +147,10 @@ class _AppPageState extends State<AppPage> {
               ),
               BottomNavigationBarItem(
                 icon: _buildBottomNavigationBarIcon(
-                  icon: Iconsax.setting,
+                  icon: Iconsax.user_octagon,
                   active: page == 2,
                 ),
-                label: 'settings',
+                label: 'profile',
               ),
               //     // BottomNavigationBarItem(
               //     //   label: 'settings',

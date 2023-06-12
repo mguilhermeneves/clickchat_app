@@ -3,8 +3,8 @@ class ContactModel {
   String? name;
   // @email é utilizado apenas para adicionar o contact.
   String? email;
-  // @userImageUrl é utilizado apenas para trazer a url de image do user.
-  String? userImageUrl;
+  // @userProfilePictureUrl é utilizado apenas para trazer a url de picture do user.
+  String? userProfilePictureUrl;
   String? userId;
 
   ContactModel({
@@ -12,6 +12,7 @@ class ContactModel {
     this.name,
     this.email,
     this.userId,
+    this.userProfilePictureUrl,
   });
 
   Map<String, dynamic> toJson() => {

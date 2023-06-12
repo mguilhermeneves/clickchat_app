@@ -1,4 +1,5 @@
 import 'package:clickchat_app/src/features/contacts/pages/contacts/components/edit_name_component.dart';
+import 'package:clickchat_app/src/global/widgets/action_button_widget.dart';
 import 'package:flutter/material.dart';
 
 import 'package:iconsax/iconsax.dart';
@@ -43,7 +44,7 @@ class _DetailsContactComponentState extends State<DetailsContactComponent> {
             children: [
               Avatar(
                 letter: widget.contact.name!,
-                imageUrl: widget.contact.userImageUrl,
+                imageUrl: widget.contact.userProfilePictureUrl,
                 backgroundColor: colorScheme.onSurface,
                 size: 27,
               ),
@@ -68,7 +69,7 @@ class _DetailsContactComponentState extends State<DetailsContactComponent> {
             ],
           ),
           const SizedBox(height: 30),
-          _buildAction(
+          ActionButton(
             iconData: Iconsax.message_text_1,
             labelText: 'Enviar mensagem',
             onTap: () {
@@ -86,7 +87,7 @@ class _DetailsContactComponentState extends State<DetailsContactComponent> {
           const SizedBox(height: 15),
           Column(
             children: [
-              _buildAction(
+              ActionButton(
                 iconData: Iconsax.edit_2,
                 labelText: 'Editar nome',
                 borderRadius:
@@ -106,7 +107,7 @@ class _DetailsContactComponentState extends State<DetailsContactComponent> {
               Divider(height: 1, thickness: 1, color: colorScheme.outline),
               ValueListenableBuilder(
                 valueListenable: controller.deleteLoading,
-                builder: (_, loading, child) => _buildAction(
+                builder: (_, loading, child) => ActionButton(
                   iconData: Iconsax.trash,
                   labelText: loading ? 'Excluindo...' : 'Excluir',
                   color: colorScheme.error,
@@ -118,46 +119,6 @@ class _DetailsContactComponentState extends State<DetailsContactComponent> {
             ],
           ),
         ],
-      ),
-    );
-  }
-
-  Widget _buildAction({
-    required IconData iconData,
-    required String labelText,
-    BorderRadius borderRadius = const BorderRadius.all(Radius.circular(15)),
-    void Function()? onTap,
-    Color? color,
-  }) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.surface,
-        borderRadius: borderRadius,
-      ),
-      child: Material(
-        color: Colors.transparent,
-        child: InkWell(
-          onTap: onTap,
-          borderRadius: borderRadius,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 15,
-              vertical: 15,
-            ),
-            child: Row(
-              children: [
-                Icon(iconData, color: color),
-                const SizedBox(width: 15),
-                Text(
-                  labelText,
-                  style: Theme.of(context).textTheme.titleMedium!.copyWith(
-                        color: color,
-                      ),
-                ),
-              ],
-            ),
-          ),
-        ),
       ),
     );
   }

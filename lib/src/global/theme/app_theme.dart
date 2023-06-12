@@ -8,8 +8,6 @@ class AppTheme {
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
     colors: [
-      // * Color(0xffd462b7),
-      // * Color(0xffed978f),
       Color(0xff604ee8),
       Color(0xffd66afc),
     ],
@@ -65,8 +63,6 @@ class AppTheme {
           bodySmall: TextStyle(color: _onPrimaryColor),
           bodyMedium: TextStyle(
             color: _onPrimaryColor,
-            // color: _onSecondaryColor,
-            // fontSize: 14,
           ),
           bodyLarge: TextStyle(color: _onPrimaryColor),
           titleLarge: TextStyle(

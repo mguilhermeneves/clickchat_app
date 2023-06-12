@@ -8,6 +8,8 @@ import '../models/user_model.dart';
 abstract class IUserRepository {
   Future<void> add(UserModel user);
   Future<void> saveToken(String token, String userId);
+  Future<void> setProfilePicture(String? profilePictureUrl, String userId);
+  Future<String?> getProfilePicture(String userId);
   Future<UserModel?> getByEmail(String email);
   Future<List<String>> getTokens(String userId);
   Future<void> deleteToken(String token, String userId);
@@ -24,7 +26,42 @@ class UserRepository implements IUserRepository {
       await _firestore
           .collection(FirestoreConstant.collectionUsers)
           .doc(user.id)
-          .set({'email': user.email, 'messasingTokens': []});
+          .set({
+        'email': user.email,
+        'messasingTokens': [],
+        'profilePictureUrl': '',
+      });
+    } catch (e) {
+      throw RepositoryException(e.toString());
+    }
+  }
+
+  @override
+  Future<void> setProfilePicture(
+      String? profilePictureUrl, String userId) async {
+    try {
+      await _firestore
+          .collection(FirestoreConstant.collectionUsers)
+          .doc(userId)
+          .update({'profilePictureUrl': profilePictureUrl ?? ''});
+    } catch (e) {
+      throw RepositoryException(e.toString());
+    }
+  }
+
+  @override
+  Future<String?> getProfilePicture(String userId) async {
+    try {
+      final doc = await _firestore
+          .collection(FirestoreConstant.collectionUsers)
+          .doc(userId)
+          .get();
+
+      var profilePictureUrl = doc.data()!['profilePictureUrl'] as String;
+
+      if (profilePictureUrl.isEmpty) return null;
+
+      return profilePictureUrl;
     } catch (e) {
       throw RepositoryException(e.toString());
     }

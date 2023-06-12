@@ -70,7 +70,7 @@ class _MessagesPageState extends State<MessagesPage> {
                 children: [
                   Avatar(
                     letter: contact.name ?? contact.email!,
-                    imageUrl: contact.userImageUrl,
+                    imageUrl: contact.userProfilePictureUrl,
                     size: 18,
                   ),
                   const SizedBox(width: 10),

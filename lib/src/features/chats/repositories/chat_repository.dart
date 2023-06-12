@@ -202,13 +202,18 @@ class ChatRepository implements IChatRepository {
     final user = await _getUser(userId);
 
     if (contacts.docs.isEmpty) {
-      return ContactModel(email: user.email, userId: user.id);
+      return ContactModel(
+        email: user.email,
+        userId: user.id,
+        userProfilePictureUrl: user.profilePictureUrl,
+      );
     }
 
     final doc = contacts.docs.first;
 
     final contact = ContactModel.fromJson({'id': doc.id, ...doc.data()})
-      ..email = user.email;
+      ..email = user.email
+      ..userProfilePictureUrl = user.profilePictureUrl;
 
     return contact;
   }
