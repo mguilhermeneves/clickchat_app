@@ -11,8 +11,15 @@ import 'package:clickchat_app/src/global/theme/extensions/elevated_button_extens
 
 import 'login_controller.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
+
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+  bool passwordObscure = true;
 
   @override
   Widget build(BuildContext context) {
@@ -58,12 +65,20 @@ class LoginPage extends StatelessWidget {
                           ),
                           const SizedBox(height: 15),
                           TextFormField(
-                            decoration: const InputDecoration(
-                              prefixIcon: Icon(Iconsax.lock),
+                            decoration: InputDecoration(
+                              prefixIcon: const Icon(Iconsax.lock),
                               labelText: 'Senha',
                               hintText: 'Digite a senha',
-                              suffixIcon: Icon(Iconsax.eye_slash),
+                              suffixIcon: GestureDetector(
+                                onTap: () => setState(
+                                  () => passwordObscure = !passwordObscure,
+                                ),
+                                child: Icon(passwordObscure
+                                    ? Iconsax.eye
+                                    : Iconsax.eye_slash),
+                              ),
                             ),
+                            obscureText: passwordObscure,
                             validator: LoginValidator.validatePassword,
                             onSaved: (value) =>
                                 controller.login.password = value,

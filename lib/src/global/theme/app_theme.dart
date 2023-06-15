@@ -91,7 +91,7 @@ class AppTheme {
           labelStyle: const TextStyle(color: _onSecondaryColor),
           hintStyle: const TextStyle(color: _onSecondaryColor),
           floatingLabelStyle: const TextStyle(color: primaryColor),
-          suffixIconColor: _onSecondaryColor,
+          suffixIconColor: _secondaryColor,
           prefixIconColor: _onSecondaryColor,
           fillColor: _surfaceColor,
           enabledBorder: UnderlineInputBorder(

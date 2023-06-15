@@ -11,8 +11,15 @@ import 'package:clickchat_app/src/global/theme/extensions/circular_progress_indi
 
 import 'signup_controller.dart';
 
-class SignupPage extends StatelessWidget {
+class SignupPage extends StatefulWidget {
   const SignupPage({super.key});
+
+  @override
+  State<SignupPage> createState() => _SignupPageState();
+}
+
+class _SignupPageState extends State<SignupPage> {
+  bool passwordObscure = true;
 
   @override
   Widget build(BuildContext context) {
@@ -60,12 +67,20 @@ class SignupPage extends StatelessWidget {
                           ),
                           const SizedBox(height: 15),
                           TextFormField(
-                            decoration: const InputDecoration(
-                              prefixIcon: Icon(Iconsax.lock),
+                            decoration: InputDecoration(
+                              prefixIcon: const Icon(Iconsax.lock),
                               labelText: 'Senha',
                               hintText: 'Digite a senha',
-                              suffixIcon: Icon(Iconsax.eye_slash),
+                              suffixIcon: GestureDetector(
+                                onTap: () => setState(
+                                  () => passwordObscure = !passwordObscure,
+                                ),
+                                child: Icon(passwordObscure
+                                    ? Iconsax.eye
+                                    : Iconsax.eye_slash),
+                              ),
                             ),
+                            obscureText: passwordObscure,
                             validator: SignupValidator.validatePassword,
                             onSaved: (value) =>
                                 controller.signup.password = value,
