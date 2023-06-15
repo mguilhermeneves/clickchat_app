@@ -11,22 +11,18 @@ class ProfileController {
   final StorageService _storageService;
   final AuthService _authService;
   final signOutLoading = ValueNotifier<bool>(false);
-  final profilePictureUrl = ValueNotifier<String?>(null);
+  final profilePictureLoading = ValueNotifier<bool>(false);
+
+  String? profilePictureUrl;
 
   User? get user => _authService.user;
 
   ProfileController(this._storageService, this._authService);
 
-  Future<void> init() async {
-    if (profilePictureUrl.value != null) return;
+  void init() {
+    if (profilePictureUrl != null) return;
 
-    var pictureResult = await _storageService.getProfilePicture(user?.uid);
-
-    if (pictureResult.succeeded) {
-      profilePictureUrl.value = pictureResult.data;
-    } else {
-      App.dialog.alert(pictureResult.error!);
-    }
+    _getProfilePicture();
   }
 
   Future<void> signOut(BuildContext context) async {
@@ -40,30 +36,56 @@ class ProfileController {
   Future<void> pickPicture(ImageSource source) async {
     final picker = ImagePicker();
 
-    final XFile? file = await picker.pickImage(source: source);
+    final XFile? file = await picker.pickImage(
+      source: source,
+      imageQuality: 50,
+    );
+
     if (file == null) return;
+
+    App.to.pop();
+
+    profilePictureLoading.value = true;
 
     final resultUpload =
         await _storageService.uploadProfilePicture(file.path, user?.uid);
 
-    App.to.pop();
+    profilePictureLoading.value = false;
 
     if (resultUpload.succeeded) {
-      profilePictureUrl.value = resultUpload.data;
+      profilePictureUrl = resultUpload.data;
     } else {
       App.dialog.alert(resultUpload.error!);
     }
   }
 
   Future<void> deletePicture() async {
-    var resultDelete = await _storageService.deleteProfilePicture(user?.uid);
-
     App.to.pop();
 
+    profilePictureLoading.value = true;
+
+    final resultDelete = await _storageService.deleteProfilePicture(user?.uid);
+
+    profilePictureLoading.value = false;
+
     if (resultDelete.succeeded) {
-      profilePictureUrl.value = null;
+      profilePictureUrl = null;
     } else {
       App.dialog.alert(resultDelete.error!);
+    }
+  }
+
+  Future<void> _getProfilePicture() async {
+    profilePictureLoading.value = true;
+
+    final pictureResult = await _storageService.getProfilePicture(user?.uid);
+
+    profilePictureLoading.value = false;
+
+    if (pictureResult.succeeded) {
+      profilePictureUrl = pictureResult.data;
+    } else {
+      App.dialog.alert(pictureResult.error!);
     }
   }
 }

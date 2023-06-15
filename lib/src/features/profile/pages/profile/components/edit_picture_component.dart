@@ -64,23 +64,18 @@ class _EditPictureComponentState extends State<EditPictureComponent> {
                     const BorderRadius.vertical(bottom: Radius.circular(15)),
                 onTap: () => controller.pickPicture(ImageSource.gallery),
               ),
-              ValueListenableBuilder(
-                  valueListenable: controller.profilePictureUrl,
-                  builder: (_, profilePictureUrl, child) {
-                    if (profilePictureUrl == null) return Container();
-
-                    return Column(
-                      children: [
-                        const SizedBox(height: 15),
-                        ActionButton(
-                          iconData: Iconsax.trash,
-                          labelText: 'Remover foto',
-                          color: colorScheme.error,
-                          onTap: controller.deletePicture,
-                        ),
-                      ],
-                    );
-                  }),
+              if (controller.profilePictureUrl != null)
+                Column(
+                  children: [
+                    const SizedBox(height: 15),
+                    ActionButton(
+                      iconData: Iconsax.trash,
+                      labelText: 'Remover foto',
+                      color: colorScheme.error,
+                      onTap: controller.deletePicture,
+                    ),
+                  ],
+                ),
             ],
           ),
         ),

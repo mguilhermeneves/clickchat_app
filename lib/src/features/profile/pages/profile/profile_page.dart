@@ -54,11 +54,12 @@ class _ProfilePageState extends State<ProfilePage> {
             Stack(
               children: [
                 ValueListenableBuilder(
-                  valueListenable: controller.profilePictureUrl,
-                  builder: (_, profilePictureUrl, child) {
+                  valueListenable: controller.profilePictureLoading,
+                  builder: (_, loading, child) {
                     return Avatar(
                       letter: controller.user?.displayName ?? '',
-                      imageUrl: profilePictureUrl,
+                      imageUrl: controller.profilePictureUrl,
+                      isLoading: loading,
                       size: 50,
                     );
                   },
