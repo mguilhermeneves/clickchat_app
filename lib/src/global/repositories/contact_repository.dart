@@ -118,6 +118,7 @@ class ContactRepository implements IContactRepository {
         final user = await _getUser(contact.userId!);
 
         contact.email = user.email;
+        contact.userProfilePictureUrl = user.profilePictureUrl;
 
         return contact;
       },
