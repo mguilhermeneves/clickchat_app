@@ -25,6 +25,8 @@ class MessageComponent extends StatefulWidget {
 }
 
 class _MessageComponentState extends State<MessageComponent> {
+  final _menuKey = GlobalKey<PopupMenuButtonState>();
+
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
@@ -53,6 +55,7 @@ class _MessageComponentState extends State<MessageComponent> {
             ),
             child: buildMessageActions(
               text: buildText(),
+              borderRadius: borderRadius,
             ),
           ),
         ),
@@ -81,6 +84,7 @@ class _MessageComponentState extends State<MessageComponent> {
           ),
           child: buildMessageActions(
             text: buildText(),
+            borderRadius: borderRadius,
           ),
         ),
       ),
@@ -112,52 +116,65 @@ class _MessageComponentState extends State<MessageComponent> {
     );
   }
 
-  Widget buildMessageActions({required Widget text}) {
+  Widget buildMessageActions(
+      {required Widget text, required BorderRadius borderRadius}) {
     return Material(
       color: Colors.transparent,
-      child: PopupMenuButton(
-        onSelected: (value) async {
-          if (value == 'apagar') {
-            await showDialog(
-              context: context,
-              builder: (_) => ConfirmRemoveMessageComponent(
-                messageId: widget.message.id,
-              ),
-            );
+      child: InkWell(
+        onTap: () async {
+          if (FocusScope.of(context).hasFocus) {
+            FocusScope.of(context).unfocus();
+            await Future.delayed(const Duration(milliseconds: 300));
           }
-          if (value == 'copiar') {
-            await Clipboard.setData(
-              ClipboardData(text: widget.message.text),
-            );
-          }
+          _menuKey.currentState?.showButtonMenu();
         },
-        tooltip: '',
-        position: PopupMenuPosition.under,
-        itemBuilder: (context) => [
-          PopupMenuItem(
-            value: 'copiar',
-            child: Row(
-              children: const [
-                Icon(Iconsax.copy),
-                SizedBox(width: 15),
-                Text('Copiar'),
-              ],
+        borderRadius: borderRadius,
+        child: PopupMenuButton(
+          key: _menuKey,
+          enabled: false,
+          onSelected: (value) async {
+            if (value == 'apagar') {
+              await showDialog(
+                context: context,
+                builder: (_) => ConfirmRemoveMessageComponent(
+                  messageId: widget.message.id,
+                ),
+              );
+            }
+            if (value == 'copiar') {
+              await Clipboard.setData(
+                ClipboardData(text: widget.message.text),
+              );
+            }
+          },
+          tooltip: '',
+          position: PopupMenuPosition.under,
+          itemBuilder: (context) => [
+            const PopupMenuItem(
+              value: 'copiar',
+              child: Row(
+                children: [
+                  Icon(Iconsax.copy),
+                  SizedBox(width: 15),
+                  Text('Copiar'),
+                ],
+              ),
             ),
-          ),
-          PopupMenuItem(
-            value: 'apagar',
-            child: Row(
-              children: const [
-                Icon(Iconsax.trash),
-                SizedBox(width: 15),
-                Text('Apagar'),
-              ],
+            const PopupMenuItem(
+              value: 'apagar',
+              child: Row(
+                children: [
+                  Icon(Iconsax.trash),
+                  SizedBox(width: 15),
+                  Text('Apagar'),
+                ],
+              ),
             ),
+          ],
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 7),
+            child: text,
           ),
-        ],
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 7),
-          child: text,
         ),
       ),
     );
