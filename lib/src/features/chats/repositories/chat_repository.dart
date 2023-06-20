@@ -84,6 +84,7 @@ class ChatRepository implements IChatRepository {
       final chatRef =
           _firestore.collection(FirestoreConstant.collectionChats).doc(chatId);
 
+      /// Desativa o chat para o usuário.
       await chatRef.update({'usersId.$requestedByUserId': false});
 
       final messages = await chatRef
@@ -100,10 +101,18 @@ class ChatRepository implements IChatRepository {
 
         if (message.userIdRemove?.isEmpty ?? true) {
           await doc.reference.update({'userIdRemove': requestedByUserId});
-          continue;
         } else {
+          /// Caso o outro usuário tenha removido a mensagem também, ela é
+          /// excluída do banco de dados.
           await doc.reference.delete();
         }
+      }
+
+      final allMessages =
+          await chatRef.collection(FirestoreConstant.collectionMessages).get();
+
+      if (allMessages.docs.isEmpty) {
+        await chatRef.delete();
       }
     } catch (e) {
       throw RepositoryException(e.toString());

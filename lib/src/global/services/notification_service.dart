@@ -15,9 +15,11 @@ import '../repositories/user_repository.dart';
 import 'auth_service.dart';
 
 class NotificationService implements ValueDisposable {
+  final _messaging = FirebaseMessaging.instance;
+
   final AuthService _authService;
   final IUserRepository _userRepository;
-  final _messaging = FirebaseMessaging.instance;
+
   late FlutterLocalNotificationsPlugin _localNotificationsPlugin;
   late AndroidNotificationChannel _channel;
   StreamSubscription<String>? _onTokenRefreshSubscription;

@@ -116,6 +116,7 @@ class MessagesController extends ValueNotifier<MessagesState> {
 
     if (result.succeeded) {
       App.to.pop();
+      App.to.pop();
     } else {
       App.dialog.alert(result.error!);
     }
