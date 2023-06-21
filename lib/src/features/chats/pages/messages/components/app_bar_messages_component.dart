@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-
 import 'dart:math' as math;
+
 import 'package:iconsax/iconsax.dart';
 import 'package:provider/provider.dart';
 
 import 'package:clickchat_app/src/global/widgets/avatar_widget.dart';
+import 'package:clickchat_app/src/global/helpers/app.dart';
 
 import '../messages_controller.dart';
 import 'confirm_remove_chat_component.dart';
@@ -57,7 +58,9 @@ class AppBarMessagesComponent extends StatelessWidget
       ),
       actions: [
         IconButton(
-          onPressed: () {},
+          onPressed: () => App.dialog.alert(
+            'Função não implementada.',
+          ),
           icon: const Icon(Icons.manage_search),
         ),
         PopupMenuButton(

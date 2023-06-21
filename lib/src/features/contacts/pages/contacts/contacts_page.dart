@@ -1,10 +1,12 @@
-import 'package:clickchat_app/src/features/contacts/pages/contacts/components/add_contact_component.dart';
-import 'package:clickchat_app/src/global/widgets/messenger_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:iconsax/iconsax.dart';
 
+import 'package:iconsax/iconsax.dart';
 import 'package:provider/provider.dart';
+
+import 'package:clickchat_app/src/features/contacts/pages/contacts/components/add_contact_component.dart';
+import 'package:clickchat_app/src/global/helpers/app.dart';
+import 'package:clickchat_app/src/global/widgets/messenger_widget.dart';
 
 import 'components/contact_component.dart';
 import 'contacts_controller.dart';
@@ -42,7 +44,9 @@ class _ContactsPageState extends State<ContactsPage> {
         ),
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () => App.dialog.alert(
+              'Função não implementada.',
+            ),
             icon: const Icon(Iconsax.search_normal),
           ),
           IconButton(

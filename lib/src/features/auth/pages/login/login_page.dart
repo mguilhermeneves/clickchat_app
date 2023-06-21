@@ -4,6 +4,7 @@ import 'package:flutter/gestures.dart';
 import 'package:provider/provider.dart';
 import 'package:iconsax/iconsax.dart';
 
+import 'package:clickchat_app/src/global/helpers/app.dart';
 import 'package:clickchat_app/src/features/auth/validators/login_validator.dart';
 import 'package:clickchat_app/src/global/theme/extensions/circular_progress_indicator_extension.dart';
 import 'package:clickchat_app/src/global/theme/extensions/text_extension.dart';
@@ -104,14 +105,9 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                           const SizedBox(height: 30),
                           GestureDetector(
-                            onTap: () {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  content: Text('Função não implementada'),
-                                  showCloseIcon: true,
-                                ),
-                              );
-                            },
+                            onTap: () => App.dialog.alert(
+                              'Função não implementada.',
+                            ),
                             child: const Text('Esqueceu sua senha?').link(),
                           ),
                         ],

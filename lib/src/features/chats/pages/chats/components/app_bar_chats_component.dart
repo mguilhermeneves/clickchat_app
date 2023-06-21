@@ -1,3 +1,4 @@
+import 'package:clickchat_app/src/global/helpers/app.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -34,7 +35,9 @@ class AppBarChatsComponent extends StatelessWidget
           ),
           actions: [
             IconButton(
-              onPressed: () {},
+              onPressed: () => App.dialog.alert(
+                'Função não implementada.',
+              ),
               icon: const Icon(Iconsax.search_normal),
             ),
             IconButton(

@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:provider/provider.dart';
 
+import 'package:clickchat_app/src/global/helpers/app.dart';
 import 'package:clickchat_app/src/features/profile/pages/profile/components/edit_picture_component.dart';
 import 'package:clickchat_app/src/features/profile/pages/profile/profile_controller.dart';
 import 'package:clickchat_app/src/global/theme/extensions/icon_button_extension.dart';
@@ -100,7 +101,9 @@ class _ProfilePageState extends State<ProfilePage> {
               labelText: 'Editar nome',
               borderRadius:
                   const BorderRadius.vertical(top: Radius.circular(15)),
-              onTap: () {},
+              onTap: () => App.dialog.alert(
+                'Função não implementada.',
+              ),
             ),
             Divider(height: 1, thickness: 1, color: colorScheme.outline),
             ValueListenableBuilder(
