@@ -23,6 +23,8 @@ class MessagesPage extends StatefulWidget {
 }
 
 class _MessagesPageState extends State<MessagesPage> {
+  bool showEmoji = false;
+
   @override
   void initState() {
     if (widget.chat == null && widget.userId == null) {
@@ -44,6 +46,16 @@ class _MessagesPageState extends State<MessagesPage> {
     super.initState();
   }
 
+  Future<bool> onWillPop() async {
+    if (showEmoji) {
+      setState(() => showEmoji = false);
+
+      return Future.value(false);
+    }
+
+    return context.read<MessagesController>().disposeChatId();
+  }
+
   @override
   Widget build(BuildContext context) {
     final controller = context.watch<MessagesController>();
@@ -51,9 +63,12 @@ class _MessagesPageState extends State<MessagesPage> {
 
     if (state.isInitial) return Container();
 
+    if (showEmoji == false) {}
+
     return WillPopScope(
-      onWillPop: controller.disposeChatId,
+      onWillPop: onWillPop,
       child: Scaffold(
+        resizeToAvoidBottomInset: !showEmoji,
         appBar: const AppBarMessagesComponent(),
         body: Builder(
           builder: (context) {
@@ -145,7 +160,11 @@ class _MessagesPageState extends State<MessagesPage> {
                         },
                       ),
                     ),
-                    const InputComponent(),
+                    InputComponent(
+                      showEmoji: showEmoji,
+                      setShowEmoji: (value) =>
+                          setState(() => showEmoji = value),
+                    ),
                   ],
                 );
               },
