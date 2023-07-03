@@ -41,6 +41,8 @@ dependencies:
   flutter_local_notifications: ^14.0.0+2
   image_picker: ^0.8.7+5
   emoji_picker_flutter: ^1.6.1
+  intl: ^0.18.1
+  cached_network_image: ^3.2.3
    # Firebase
   firebase_core: ^2.8.0
   firebase_auth: ^4.3.0

@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 
 import 'features/chats/pages/chats/chats_controller.dart';
 import 'features/contacts/pages/contacts/contacts_controller.dart';
+import 'features/profile/pages/profile/profile_controller.dart';
 import 'global/repositories/contact_repository.dart';
 import 'global/repositories/user_repository.dart';
 import 'global/services/auth_service.dart';
@@ -32,6 +33,7 @@ class AppProvider {
   static Future<void> disposeValues(BuildContext context) async {
     context.read<ContactsController>().disposeValue();
     context.read<ChatsController>().disposeValue();
+    context.read<ProfileController>().disposeValue();
 
     /// Aguarda [disposeValue] de [NotificationService] pq ele conecta com
     /// firestore para apagar o token. Quando ocorre [signOut] antes, da erro

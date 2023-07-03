@@ -29,12 +29,11 @@ class AppTheme {
   static const _onSurfaceVariantColor = Color(0xff232325);
 
   static const _outlineColor = Color(0xff242431);
-  static const _outlineVariantColor = Color(0xFF272727); // 0xFF1F1F1F
+  static const _outlineVariantColor = Color(0xFF272727);
 
   static final _errorColor = Colors.red.shade300;
 
   static ThemeData get dark => ThemeData(
-        // useMaterial3: true,
         scaffoldBackgroundColor: _backgroundColor,
         primaryColor: primaryColor,
         canvasColor: _backgroundColor,

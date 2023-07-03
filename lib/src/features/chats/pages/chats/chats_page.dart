@@ -1,4 +1,3 @@
-import 'package:clickchat_app/src/global/helpers/app.dart';
 import 'package:flutter/material.dart';
 
 import 'package:provider/provider.dart';
@@ -12,7 +11,12 @@ import 'components/chat_component.dart';
 import 'components/confirm_remove_chats_component.dart';
 
 class ChatsPage extends StatefulWidget {
-  const ChatsPage({super.key});
+  final double bottomNavigationBarHeight;
+
+  const ChatsPage({
+    super.key,
+    required this.bottomNavigationBarHeight,
+  });
 
   @override
   State<ChatsPage> createState() => _ChatsPageState();
@@ -117,7 +121,10 @@ class _ChatsPageState extends State<ChatsPage> {
               }
 
               return ListView.builder(
-                padding: const EdgeInsets.symmetric(vertical: 10),
+                padding: EdgeInsets.only(
+                  top: 10,
+                  bottom: 10 + widget.bottomNavigationBarHeight,
+                ),
                 itemCount: chats!.length,
                 itemBuilder: (_, index) {
                   final chat = chats[index];

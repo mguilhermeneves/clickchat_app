@@ -1,10 +1,9 @@
-import 'package:clickchat_app/src/features/chats/models/message_model.dart';
-import 'package:clickchat_app/src/global/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 
+import 'package:clickchat_app/src/features/chats/models/message_model.dart';
+import 'package:clickchat_app/src/global/theme/app_theme.dart';
 import 'package:clickchat_app/src/global/helpers/datetime_extension.dart';
 import 'package:clickchat_app/src/global/widgets/avatar_widget.dart';
-import 'package:iconsax/iconsax.dart';
 
 import '../../../models/chat_model.dart';
 
@@ -134,7 +133,6 @@ class _ChatComponentState extends State<ChatComponent> {
                                           style: const TextStyle(
                                             fontSize: 10,
                                             fontWeight: FontWeight.w500,
-                                            // fontSize: 11,
                                           ),
                                         ),
                                       ),

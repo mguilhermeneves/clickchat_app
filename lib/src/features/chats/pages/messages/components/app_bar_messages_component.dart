@@ -57,12 +57,6 @@ class AppBarMessagesComponent extends StatelessWidget
         icon: const Icon(Iconsax.arrow_left),
       ),
       actions: [
-        IconButton(
-          onPressed: () => App.dialog.alert(
-            'Função não implementada.',
-          ),
-          icon: const Icon(Icons.manage_search),
-        ),
         PopupMenuButton(
           icon: Transform.rotate(
             angle: 90 * math.pi / 180,
@@ -70,13 +64,30 @@ class AppBarMessagesComponent extends StatelessWidget
           ),
           tooltip: '',
           position: PopupMenuPosition.under,
-          onSelected: (_) async {
-            await showDialog(
-              context: context,
-              builder: (_) => ConfirmRemoveChatComponent(controller.chat.id),
-            );
+          onSelected: (selected) async {
+            if (selected == 'buscar') {
+              App.dialog.alert(
+                'Função não implementada.',
+              );
+            }
+            if (selected == 'apagar') {
+              await showDialog(
+                context: context,
+                builder: (_) => ConfirmRemoveChatComponent(controller.chat.id),
+              );
+            }
           },
           itemBuilder: (context) => [
+            const PopupMenuItem(
+              value: 'buscar',
+              child: Row(
+                children: [
+                  Icon(Iconsax.search_status),
+                  SizedBox(width: 15),
+                  Text('Buscar'),
+                ],
+              ),
+            ),
             const PopupMenuItem(
               value: 'apagar',
               child: Row(

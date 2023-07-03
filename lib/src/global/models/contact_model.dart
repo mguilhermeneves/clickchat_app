@@ -1,9 +1,11 @@
 class ContactModel {
   String? id;
   String? name;
-  // @email é utilizado apenas para adicionar o contact.
+
+  /// @email é utilizado apenas para adicionar o contact.
   String? email;
-  // @userProfilePictureUrl é utilizado apenas para trazer a url de picture do user.
+
+  /// @userProfilePictureUrl é utilizado apenas para trazer a url de picture do user.
   String? userProfilePictureUrl;
   String? userId;
 

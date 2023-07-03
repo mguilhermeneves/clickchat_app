@@ -29,15 +29,14 @@ class AuthService extends ChangeNotifier {
     required String password,
   }) async {
     try {
-      final UserCredential credentials =
-          await _auth.createUserWithEmailAndPassword(
+      await _auth.createUserWithEmailAndPassword(
         email: email.trim(),
         password: password.trim(),
       );
 
-      user = credentials.user;
-
       await user!.updateDisplayName(displayName);
+
+      user = _auth.currentUser;
 
       _userRepository.add(UserModel(id: user!.uid, email: email.trim()));
 

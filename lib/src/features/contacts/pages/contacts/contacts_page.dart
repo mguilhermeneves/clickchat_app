@@ -12,7 +12,12 @@ import 'components/contact_component.dart';
 import 'contacts_controller.dart';
 
 class ContactsPage extends StatefulWidget {
-  const ContactsPage({super.key});
+  final double bottomNavigationBarHeight;
+
+  const ContactsPage({
+    super.key,
+    required this.bottomNavigationBarHeight,
+  });
 
   @override
   State<ContactsPage> createState() => _ContactsPageState();
@@ -98,7 +103,10 @@ class _ContactsPageState extends State<ContactsPage> {
               }
 
               return ListView.builder(
-                padding: const EdgeInsets.symmetric(vertical: 10),
+                padding: EdgeInsets.only(
+                  top: 10,
+                  bottom: 10 + widget.bottomNavigationBarHeight,
+                ),
                 itemCount: contacts!.length,
                 itemBuilder: (_, index) {
                   return ContactComponent(contacts[index]);

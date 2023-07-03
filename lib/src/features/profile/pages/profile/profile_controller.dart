@@ -6,8 +6,9 @@ import 'package:image_picker/image_picker.dart';
 import 'package:clickchat_app/src/global/services/auth_service.dart';
 import 'package:clickchat_app/src/global/services/storage_service.dart';
 import 'package:clickchat_app/src/global/helpers/app.dart';
+import 'package:clickchat_app/src/global/helpers/value_disposable.dart';
 
-class ProfileController {
+class ProfileController implements ValueDisposable {
   final StorageService _storageService;
   final AuthService _authService;
   final signOutLoading = ValueNotifier<bool>(false);
@@ -34,6 +35,8 @@ class ProfileController {
   }
 
   Future<void> pickPicture(ImageSource source) async {
+    App.to.pop();
+
     final picker = ImagePicker();
 
     final XFile? file = await picker.pickImage(
@@ -42,8 +45,6 @@ class ProfileController {
     );
 
     if (file == null) return;
-
-    App.to.pop();
 
     profilePictureLoading.value = true;
 
@@ -87,5 +88,10 @@ class ProfileController {
     } else {
       App.dialog.alert(pictureResult.error!);
     }
+  }
+
+  @override
+  Future<void> disposeValue() async {
+    profilePictureUrl = null;
   }
 }

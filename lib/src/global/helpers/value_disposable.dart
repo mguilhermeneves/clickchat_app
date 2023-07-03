@@ -1,4 +1,4 @@
 abstract class ValueDisposable {
-  // Utilizado em classes providers em AppProvider.disposeValues()
+  /// Utilizado em classes providers em AppProvider.disposeValues()
   Future<void> disposeValue();
 }

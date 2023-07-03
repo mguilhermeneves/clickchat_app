@@ -18,8 +18,8 @@ class ContactComponent extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
       decoration: BoxDecoration(
-        color: colorScheme.surface,
         borderRadius: borderRadius,
+        border: Border.all(color: colorScheme.outline),
       ),
       child: Material(
         color: Colors.transparent,

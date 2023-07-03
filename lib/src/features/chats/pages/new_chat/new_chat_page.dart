@@ -1,9 +1,10 @@
-import 'package:clickchat_app/src/global/widgets/messenger_widget.dart';
 import 'package:flutter/material.dart';
 
 import 'package:iconsax/iconsax.dart';
 import 'package:provider/provider.dart';
 
+import 'package:clickchat_app/src/global/helpers/app.dart';
+import 'package:clickchat_app/src/global/widgets/messenger_widget.dart';
 import 'package:clickchat_app/src/features/chats/pages/new_chat/new_chat_controller.dart';
 
 import 'components/contact_component.dart';
@@ -38,6 +39,14 @@ class _NewChatPageState extends State<NewChatPage> {
           onPressed: Navigator.of(context).pop,
           icon: const Icon(Iconsax.arrow_left),
         ),
+        actions: [
+          IconButton(
+            onPressed: () => App.dialog.alert(
+              'Função não implementada.',
+            ),
+            icon: const Icon(Iconsax.search_normal),
+          ),
+        ],
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(1),
           child: Container(

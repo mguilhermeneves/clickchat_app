@@ -1,3 +1,5 @@
+import 'package:intl/intl.dart';
+
 extension DateTimeExtension on DateTime? {
   bool dateEquals(DateTime? dateToCompare) {
     if (this == null || dateToCompare == null) {
@@ -9,9 +11,9 @@ extension DateTimeExtension on DateTime? {
         this!.day == dateToCompare.day;
   }
 
-  String get time => '${this!.hour}:${this!.minute}';
+  String get time => DateFormat('HH:mm').format(this!);
 
-  String get date => '${this!.day}/${this!.month}/${this!.year}';
+  String get date => DateFormat('dd/MM/yyyy').format(this!);
 
   String get dateWithMonthName {
     final month = _months[this!.month - 1];

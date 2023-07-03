@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:cached_network_image/cached_network_image.dart';
+
 import 'package:clickchat_app/src/global/helpers/string_extension.dart';
 
 class Avatar extends StatefulWidget {
@@ -27,45 +29,54 @@ class Avatar extends StatefulWidget {
 }
 
 class _AvatarState extends State<Avatar> {
-  bool isLoadingImage = false;
-
   @override
   Widget build(BuildContext context) {
-    return CircleAvatar(
-      radius: widget.size,
-      backgroundColor:
-          widget.backgroundColor ?? Theme.of(context).colorScheme.onSurface,
-      child: widget.isLoading
-          ? const ClipOval(child: CircularProgressIndicator())
-          : widget.imageUrl == null
-              ? _buildLetter()
-              : _buildImage(),
-    );
-  }
+    if (widget.isLoading) {
+      return CircleAvatar(
+        radius: widget.size,
+        backgroundColor:
+            widget.backgroundColor ?? Theme.of(context).colorScheme.onSurface,
+        child: ClipOval(
+          child: SizedBox(
+            height: widget.size * 0.70,
+            width: widget.size * 0.70,
+            child: const CircularProgressIndicator(),
+          ),
+        ),
+      );
+    }
 
-  Widget _buildImage() {
-    return ClipOval(
-      child: Image.network(
-        widget.imageUrl!,
-        fit: BoxFit.cover,
-        width: double.infinity,
-        height: double.infinity,
-        loadingBuilder: (context, child, event) {
-          if (event != null) return const CircularProgressIndicator();
+    if (widget.imageUrl == null) {
+      return CircleAvatar(
+        radius: widget.size,
+        backgroundColor:
+            widget.backgroundColor ?? Theme.of(context).colorScheme.onSurface,
+        child: Text(
+          widget.letter.firstLetter,
+          style: TextStyle(
+            color:
+                widget.letterColor ?? Theme.of(context).colorScheme.onPrimary,
+            fontSize: widget.letterSize ?? widget.size,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+      );
+    }
 
-          return child;
-        },
+    return CachedNetworkImage(
+      imageUrl: widget.imageUrl!,
+      placeholder: (context, url) => CircleAvatar(
+        backgroundColor:
+            widget.backgroundColor ?? Theme.of(context).colorScheme.onSurface,
+        radius: widget.size,
       ),
-    );
-  }
-
-  Widget _buildLetter() {
-    return Text(
-      widget.letter.firstLetter,
-      style: TextStyle(
-        color: widget.letterColor ?? Theme.of(context).colorScheme.onPrimary,
-        fontSize: widget.letterSize ?? widget.size,
-        fontWeight: FontWeight.w500,
+      imageBuilder: (context, image) => CircleAvatar(
+        backgroundImage: image,
+        radius: widget.size,
+      ),
+      errorWidget: (context, url, error) => CircleAvatar(
+        radius: widget.size,
+        child: const Icon(Icons.person_outline),
       ),
     );
   }
