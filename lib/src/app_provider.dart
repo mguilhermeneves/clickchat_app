@@ -1,3 +1,4 @@
+import 'package:clickchat_app/src/app_controller.dart';
 import 'package:flutter/material.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -17,7 +18,9 @@ final appProvider = [
   Provider<IUserRepository>(
     create: (context) => UserRepository(context.read()),
   ),
-  ChangeNotifierProvider(create: (context) => AuthService(context.read())),
+  ChangeNotifierProvider(
+    create: (context) => AuthService(context.read()),
+  ),
   Provider<IContactRepository>(
     create: (context) => ContactRepository(context.read()),
   ),
@@ -25,7 +28,11 @@ final appProvider = [
     create: (context) => GetAllContacts(context.read(), context.read()),
   ),
   Provider(
-      create: (context) => NotificationService(context.read(), context.read())),
+    create: (context) => NotificationService(context.read(), context.read()),
+  ),
+  Provider(
+    create: (context) => AppController(context.read(), context.read()),
+  ),
 ];
 
 class AppProvider {

@@ -22,6 +22,10 @@ class ChatsController extends ValueNotifier<ChatsState>
     _getAll();
   }
 
+  Future<void> refresh() async {
+    _getAll();
+  }
+
   Future<void> removeChats(List<String> chatsId) async {
     removeChatsLoading.value = true;
 

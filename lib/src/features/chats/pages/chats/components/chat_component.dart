@@ -87,6 +87,7 @@ class _ChatComponentState extends State<ChatComponent> {
                                 ),
                               ),
                             ),
+                            if (lastMessage != null) const SizedBox(width: 10),
                             if (lastMessage != null)
                               Text(
                                 lastMessageDateTime(lastMessage.dateTime),

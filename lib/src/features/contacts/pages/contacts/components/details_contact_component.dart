@@ -1,10 +1,11 @@
-import 'package:clickchat_app/src/features/contacts/pages/contacts/components/edit_name_component.dart';
-import 'package:clickchat_app/src/global/widgets/action_button_widget.dart';
 import 'package:flutter/material.dart';
 
 import 'package:iconsax/iconsax.dart';
 import 'package:provider/provider.dart';
 
+import 'package:clickchat_app/src/app_controller.dart';
+import 'package:clickchat_app/src/features/contacts/pages/contacts/components/edit_name_component.dart';
+import 'package:clickchat_app/src/global/widgets/action_button_widget.dart';
 import 'package:clickchat_app/src/global/widgets/avatar_widget.dart';
 
 import '../../../../../global/models/contact_model.dart';
@@ -49,22 +50,24 @@ class _DetailsContactComponentState extends State<DetailsContactComponent> {
                 size: 27,
               ),
               const SizedBox(width: 15),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    widget.contact.name!,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: Theme.of(context).textTheme.titleLarge,
-                  ),
-                  Text(
-                    widget.contact.email!,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: Theme.of(context).textTheme.labelMedium,
-                  ),
-                ],
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      widget.contact.name!,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: Theme.of(context).textTheme.titleLarge,
+                    ),
+                    Text(
+                      widget.contact.email!,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: Theme.of(context).textTheme.labelMedium,
+                    ),
+                  ],
+                ),
               ),
             ],
           ),
@@ -72,16 +75,13 @@ class _DetailsContactComponentState extends State<DetailsContactComponent> {
           ActionButton(
             iconData: Iconsax.message_text_1,
             labelText: 'Enviar mensagem',
-            onTap: () {
-              Navigator.of(context).pop();
-              Navigator.of(context).pushReplacementNamed(
-                '/page',
-                arguments: 0,
-              );
-              Navigator.of(context).pushNamed(
+            onTap: () async {
+              Navigator.of(context).popAndPushNamed(
                 '/chat-messages/new',
                 arguments: widget.contact.userId,
               );
+
+              context.read<AppController>().jumpToPage(AppPageView.chats);
             },
           ),
           const SizedBox(height: 15),

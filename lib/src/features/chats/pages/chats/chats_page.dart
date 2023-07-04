@@ -89,56 +89,59 @@ class _ChatsPageState extends State<ChatsPage> {
           );
         },
       ),
-      body: Builder(
-        builder: (context) {
-          if (state.isLoading) {
-            return const LinearProgressIndicator();
-          }
+      body: RefreshIndicator(
+        onRefresh: controller.refresh,
+        child: Builder(
+          builder: (context) {
+            if (state.isLoading) {
+              return const LinearProgressIndicator();
+            }
 
-          if (state.isError) {
-            return Messenger.alert(state.asError.message);
-          }
+            if (state.isError) {
+              return Messenger.alert(state.asError.message);
+            }
 
-          return StreamBuilder(
-            stream: state.asSuccess.chats,
-            builder: (context, snapshot) {
-              if (snapshot.hasError) {
-                return const Messenger.alert(
-                  'Ocorreu um problema inesperado na atualização em tempo real. Aguarde alguns instantes e tente novamente.',
-                );
-              }
-
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return Container();
-              }
-
-              final chats = snapshot.data;
-
-              if (chats?.isEmpty ?? true) {
-                return const Messenger(
-                  'Você não possui nenhum conversa.',
-                );
-              }
-
-              return ListView.builder(
-                padding: EdgeInsets.only(
-                  top: 10,
-                  bottom: 10 + widget.bottomNavigationBarHeight,
-                ),
-                itemCount: chats!.length,
-                itemBuilder: (_, index) {
-                  final chat = chats[index];
-                  return ChatComponent(
-                    chat: chat,
-                    selected: selectedChatsId.contains(chat.id),
-                    onLongPress: () => onSelected(chat.id),
-                    onTap: () => onTap(chat),
+            return StreamBuilder(
+              stream: state.asSuccess.chats,
+              builder: (context, snapshot) {
+                if (snapshot.hasError) {
+                  return const Messenger.alert(
+                    'Ocorreu um problema inesperado na atualização em tempo real. Aguarde alguns instantes e tente novamente.',
                   );
-                },
-              );
-            },
-          );
-        },
+                }
+
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Container();
+                }
+
+                final chats = snapshot.data;
+
+                if (chats?.isEmpty ?? true) {
+                  return const Messenger(
+                    'Você não possui nenhum conversa.',
+                  );
+                }
+
+                return ListView.builder(
+                  padding: EdgeInsets.only(
+                    top: 10,
+                    bottom: 10 + widget.bottomNavigationBarHeight,
+                  ),
+                  itemCount: chats!.length,
+                  itemBuilder: (_, index) {
+                    final chat = chats[index];
+                    return ChatComponent(
+                      chat: chat,
+                      selected: selectedChatsId.contains(chat.id),
+                      onLongPress: () => onSelected(chat.id),
+                      onTap: () => onTap(chat),
+                    );
+                  },
+                );
+              },
+            );
+          },
+        ),
       ),
     );
   }
