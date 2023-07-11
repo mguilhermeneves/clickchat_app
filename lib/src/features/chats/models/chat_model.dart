@@ -9,6 +9,9 @@ class ChatModel {
   ContactModel? contact;
   Stream<int>? unreadMessages;
 
+  MessageModel? lastMessageValue;
+  int? unreadMessagesValue;
+
   ChatModel({
     required this.id,
     required this.usersId,

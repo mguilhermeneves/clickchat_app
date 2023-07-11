@@ -101,42 +101,28 @@ class _ChatsPageState extends State<ChatsPage> {
               return Messenger.alert(state.asError.message);
             }
 
-            return StreamBuilder(
-              stream: state.asSuccess.chats,
-              builder: (context, snapshot) {
-                if (snapshot.hasError) {
-                  return const Messenger.alert(
-                    'Ocorreu um problema inesperado na atualização em tempo real. Aguarde alguns instantes e tente novamente.',
-                  );
-                }
+            final chats = state.asSuccess.chats;
 
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Container();
-                }
+            if (chats.isEmpty) {
+              return const Messenger(
+                'Você não possui nenhuma conversa.',
+              );
+            }
 
-                final chats = snapshot.data;
-
-                if (chats?.isEmpty ?? true) {
-                  return const Messenger(
-                    'Você não possui nenhum conversa.',
-                  );
-                }
-
-                return ListView.builder(
-                  padding: EdgeInsets.only(
-                    top: 10,
-                    bottom: 10 + widget.bottomNavigationBarHeight,
-                  ),
-                  itemCount: chats!.length,
-                  itemBuilder: (_, index) {
-                    final chat = chats[index];
-                    return ChatComponent(
-                      chat: chat,
-                      selected: selectedChatsId.contains(chat.id),
-                      onLongPress: () => onSelected(chat.id),
-                      onTap: () => onTap(chat),
-                    );
-                  },
+            return ListView.builder(
+              padding: EdgeInsets.only(
+                top: 10,
+                bottom: 10 + widget.bottomNavigationBarHeight,
+              ),
+              itemCount: chats.length,
+              itemBuilder: (_, index) {
+                final chat = chats[index];
+                return ChatComponent(
+                  key: Key(chat.id),
+                  chat: chat,
+                  selected: selectedChatsId.contains(chat.id),
+                  onLongPress: () => onSelected(chat.id),
+                  onTap: () => onTap(chat),
                 );
               },
             );

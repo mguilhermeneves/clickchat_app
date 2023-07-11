@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import 'package:clickchat_app/src/features/chats/models/message_model.dart';
 import 'package:clickchat_app/src/global/theme/app_theme.dart';
 import 'package:clickchat_app/src/global/helpers/datetime_extension.dart';
 import 'package:clickchat_app/src/global/widgets/avatar_widget.dart';
@@ -26,7 +25,9 @@ class ChatComponent extends StatefulWidget {
 }
 
 class _ChatComponentState extends State<ChatComponent> {
-  String lastMessageDateTime(DateTime dateTime) {
+  String lastMessageDateTime(DateTime? dateTime) {
+    if (dateTime == null) return '';
+
     final now = DateTime.now();
     if (dateTime.dateEquals(now)) {
       return dateTime.time;
@@ -43,6 +44,9 @@ class _ChatComponentState extends State<ChatComponent> {
   @override
   Widget build(BuildContext context) {
     final contact = widget.chat.contact!;
+
+    var lastMessage = widget.chat.lastMessageValue;
+    var unreadMessages = widget.chat.unreadMessagesValue;
 
     return InkWell(
       onLongPress: widget.onLongPress,
@@ -66,85 +70,64 @@ class _ChatComponentState extends State<ChatComponent> {
                 ],
               ),
               const SizedBox(width: 15),
-              StreamBuilder<MessageModel?>(
-                stream: widget.chat.lastMessage,
-                builder: (context, snapshot) {
-                  final lastMessage = snapshot.data;
-
-                  return Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
                       children: [
-                        Row(
-                          children: [
-                            Expanded(
+                        Expanded(
+                          child: Text(
+                            contact.name ?? contact.email!,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: const TextStyle(
+                              fontSize: 15,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 10),
+                        Text(
+                          lastMessageDateTime(lastMessage?.dateTime),
+                          style: Theme.of(context).textTheme.labelMedium,
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 2),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Text(
+                            lastMessage?.text ?? '',
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: Theme.of(context).textTheme.labelMedium,
+                          ),
+                        ),
+                        if (unreadMessages != null && unreadMessages != 0)
+                          Container(
+                            height: 21,
+                            width: 21,
+                            decoration: BoxDecoration(
+                              gradient: AppTheme.gradient,
+                              borderRadius: BorderRadius.circular(100),
+                            ),
+                            child: Center(
                               child: Text(
-                                contact.name ?? contact.email!,
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
+                                unreadMessages > 99
+                                    ? '99+'
+                                    : unreadMessages.toString(),
                                 style: const TextStyle(
-                                  fontSize: 15,
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.w500,
                                 ),
                               ),
                             ),
-                            if (lastMessage != null) const SizedBox(width: 10),
-                            if (lastMessage != null)
-                              Text(
-                                lastMessageDateTime(lastMessage.dateTime),
-                                style: Theme.of(context).textTheme.labelMedium,
-                              ),
-                          ],
-                        ),
-                        if (lastMessage != null) const SizedBox(height: 2),
-                        if (lastMessage != null)
-                          Row(
-                            children: [
-                              Expanded(
-                                child: Text(
-                                  lastMessage.text,
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                  style:
-                                      Theme.of(context).textTheme.labelMedium,
-                                ),
-                              ),
-                              StreamBuilder(
-                                  stream: widget.chat.unreadMessages,
-                                  builder: (context, snapshot) {
-                                    final unreadMessages = snapshot.data;
-
-                                    if (unreadMessages == null ||
-                                        unreadMessages == 0) {
-                                      return Container();
-                                    }
-
-                                    return Container(
-                                      height: 21,
-                                      width: 21,
-                                      decoration: BoxDecoration(
-                                        gradient: AppTheme.gradient,
-                                        borderRadius:
-                                            BorderRadius.circular(100),
-                                      ),
-                                      child: Center(
-                                        child: Text(
-                                          unreadMessages > 99
-                                              ? '99+'
-                                              : unreadMessages.toString(),
-                                          style: const TextStyle(
-                                            fontSize: 10,
-                                            fontWeight: FontWeight.w500,
-                                          ),
-                                        ),
-                                      ),
-                                    );
-                                  }),
-                            ],
                           ),
                       ],
                     ),
-                  );
-                },
+                  ],
+                ),
               ),
             ],
           ),

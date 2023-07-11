@@ -19,7 +19,7 @@ abstract class ChatsState {
     return LoadingChatsState();
   }
 
-  factory ChatsState.success(Stream<List<ChatModel>> chats) {
+  factory ChatsState.success(List<ChatModel> chats) {
     return SuccessChatsState(chats);
   }
 
@@ -31,7 +31,7 @@ abstract class ChatsState {
 class InitialChatsState extends ChatsState {}
 
 class SuccessChatsState extends ChatsState {
-  final Stream<List<ChatModel>> chats;
+  final List<ChatModel> chats;
 
   SuccessChatsState(this.chats);
 }
