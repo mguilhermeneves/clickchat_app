@@ -18,8 +18,12 @@ void main() {
         chatsRef.doc(chatId).collection(FirestoreConstant.collectionMessages);
     final usersRef = firestore.collection(FirestoreConstant.collectionUsers);
 
-    await usersRef.doc('2CjBWVDFgrMnCdh26QS0fKNkO3n3').set({'email': ''});
-    await usersRef.doc('5DjBWVDFgrMnCdh26QS0fKNkO3n0').set({'email': ''});
+    await usersRef
+        .doc('2CjBWVDFgrMnCdh26QS0fKNkO3n3')
+        .set({'email': '', 'profilePictureUrl': ''});
+    await usersRef
+        .doc('5DjBWVDFgrMnCdh26QS0fKNkO3n0')
+        .set({'email': '', 'profilePictureUrl': ''});
 
     await chatsRef.doc(chatId).set({
       'usersId': {
@@ -80,7 +84,7 @@ void main() {
     final usersRef = firestore.collection(FirestoreConstant.collectionUsers);
     const userId = '2CjBWVDFgrMnCdh26QS0fKNkO3n3';
 
-    await usersRef.doc(userId).set({'email': ''});
+    await usersRef.doc(userId).set({'email': '', 'profilePictureUrl': ''});
 
     await chatsRef.add({
       'usersId': {
@@ -110,7 +114,7 @@ void main() {
     final usersRef = firestore.collection(FirestoreConstant.collectionUsers);
     const userId = '2CjBWVDFgrMnCdh26QS0fKNkO3n3';
 
-    await usersRef.doc(userId).set({'email': ''});
+    await usersRef.doc(userId).set({'email': '', 'profilePictureUrl': ''});
 
     final chat = await chatRepository.get(userId, requestedByUserId);
 

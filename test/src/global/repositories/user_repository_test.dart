@@ -37,6 +37,7 @@ void main() {
         .set(
       {
         'email': 'user@clickchat.com',
+        'profilePictureUrl': '',
       },
     );
 

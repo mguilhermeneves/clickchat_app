@@ -90,7 +90,7 @@ void main() {
     final usersRef = firestore.collection(FirestoreConstant.collectionUsers);
     const userId = '3djBWVDFgrMnCdh26QS0fKNkO3n1';
 
-    await usersRef.doc(userId).set({'email': ''});
+    await usersRef.doc(userId).set({'email': '', 'profilePictureUrl': ''});
 
     await firestore
         .collection(FirestoreConstant.collectionUsers)
@@ -131,9 +131,11 @@ void main() {
 
     await usersRef.doc('3djBWVDFgrMnCdh26QS0fKNkO3n1').set({
       'email': 'joao@clickchat.com',
+      'profilePictureUrl': '',
     });
     await usersRef.doc('2djBWVDFgrMnCdh26QS0fKNkO3n1').set({
       'email': 'pedro@clickchat.com',
+      'profilePictureUrl': '',
     });
 
     await contactsRef.add({
