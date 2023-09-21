@@ -1,9 +1,9 @@
-import 'package:clickchat_app/src/features/chats/pages/messages/components/confirm_remove_message_component.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'package:iconsax/iconsax.dart';
 
+import 'package:clickchat_app/src/features/chats/pages/messages/components/confirm_remove_message_component.dart';
 import 'package:clickchat_app/src/features/chats/models/message_model.dart';
 import 'package:clickchat_app/src/global/helpers/datetime_extension.dart';
 import 'package:clickchat_app/src/global/theme/app_theme.dart';

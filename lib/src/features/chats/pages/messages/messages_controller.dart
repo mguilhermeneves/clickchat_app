@@ -46,8 +46,6 @@ class MessagesController extends ValueNotifier<MessagesState> {
     this._removeChat,
   ) : super(MessagesState.initial());
 
-  late Stream<List<MessageModel>> stream;
-
   void init(ChatModel chatModel) async {
     chat = chatModel;
 

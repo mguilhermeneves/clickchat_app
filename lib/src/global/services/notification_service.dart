@@ -75,6 +75,8 @@ class NotificationService implements ValueDisposable {
         );
       }
 
+      //! API Cloud Messaging (legacy) descontinuado em 20/06/2023. Migrar para
+      //! API Firebase Cloud Messaging (V1) até 20/06/2024.
       Response response = await http.post(
         Uri.parse('https://fcm.googleapis.com/fcm/send'),
         headers: {
