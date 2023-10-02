@@ -17,16 +17,23 @@ Aplicativo de chat mobile desenvolvido com Flutter e Firebase.
   - Tirar, selecionar e remover uma foto para o perfil
   - Sair da conta
 - `Notificações`
-  - Receber notificações de mensagens
+  - Receber e enviar notificações de mensagens
+
+<!-- ## 📷 Capturas da tela -->
+<!-- <p align="center">
+<img src="screenshots/1640179162978.png" width="30%">
+<img src="screenshots/1640179148024.png" width="30%">
+<img src="screenshots/1640179172631.png" width="30%">
+</p> -->
 
 ## 📝 Arquitetura
-- Repository Pattern: Para acesso a API externa
-- Dependency Injection: Resolver dependências das classes (Provider)
-- Controllers: Guardar e mudar estados (ValueNotifier)
-- Stores: Guardar e mudar estados (Foi utilizado apenas na feature auth para exemplo)
-- Usecases: Regras de negócio
-- Push Notification: (Firebase Cloud Messaging)
-- Tests
+- **Repository Pattern:** Para acesso a API externa
+- **Dependency Injection:** Resolver dependências das classes (Provider)
+- **Controllers:** Guardar e mudar estados (ValueNotifier)
+- **Stores:** Guardar e mudar estados (Foi utilizado apenas na feature auth para exemplo)
+- **Usecases:** Regras de negócio
+- **Push Notification:** (Firebase Cloud Messaging)
+- **Tests**
 
 ## 📦 Pacotes/Dependências
 - [iconsax](https://pub.dev/packages/iconsax)
@@ -48,7 +55,35 @@ dev:
 - [fake_cloud_firestore](https://pub.dev/packages/fake_cloud_firestore)
 
 ## 👆 Como usar
-1. Criar um projeto do Firebase https://console.firebase.google.com/
-2. Adicionar o Firebase no app https://firebase.google.com/docs/flutter/setup?authuser=0&hl=pt&platform=ios
-3. Dentro do Firestore, criar um Cloud Firestore
-5. Dentro do Firestore, Criar um Messaging. (Configurar token na const)
+Primeiro você precisa clonar esse repositório. No terminal:
+```terminal
+git clone https://github.com/mguilhermeneves/clickchat_app.git
+```
+Depois instalar as dependências
+```terminal
+flutter pub get
+```
+
+Agora é necessário configurar o Firebase.
+
+1. Criar um projeto do Firebase: https://console.firebase.google.com/
+
+2. Configurar o Firebase no app. Tutorial: https://firebase.google.com/docs/flutter/setup
+
+3. Dentro do projeto no Firebase, vai ser utilizado o Authentication, Cloud Firestore, Messasing e Storage.
+
+4. No Storage do Firebase, criar uma pasta com o nome `pictures`
+
+Após configurar o Firebase, no app, crie o arquivo `cloud_messasing_constant.dart` em ***lib/src/global/constants***. Depois de criado o arquivo, insira o código:
+```dart
+class CloudMessasingConstant {
+  // Esse token está nas Configurações do projeto do Firebase, em 
+  // Cloud Messasing (API Cloud Messaging (legada)).
+  static const String token = 'CLOUD_MESSASING_TOKEN';
+}
+```
+
+Agora é só executar o app. No terminal:
+```terminal
+flutter pub run
+```
