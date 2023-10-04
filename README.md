@@ -1,4 +1,5 @@
-![logo clickchat](readme_images/clickchat_logo.png)
+<img style="border-radius: 5px;" src="readme_files/clickchat_logo.png" width="100%">
+<div style="height: 20px"></div>
 
 Aplicativo de chat mobile desenvolvido com Flutter e Firebase.
 
@@ -19,14 +20,30 @@ Aplicativo de chat mobile desenvolvido com Flutter e Firebase.
 - `Notificações`
   - Receber e enviar notificações de mensagens
 
-<!-- ## 📷 Capturas da tela -->
-<!-- <p align="center">
-<img src="screenshots/1640179162978.png" width="30%">
-<img src="screenshots/1640179148024.png" width="30%">
-<img src="screenshots/1640179172631.png" width="30%">
-</p> -->
+## 📱 Demo
+<div style="display: flex;">
+<div style="background-image: linear-gradient(#604ee8 , #d66afc); padding: 5%; width: 50%; text-align: center; border-radius: 5px;">
+  <img style="border-radius: 30px;" src="readme_files/login.gif">
+</div>
+<div style="width: 10px"></div>
+<div style="background-image: linear-gradient(#604ee8 , #d66afc); padding: 5%; width: 50%; text-align: center; border-radius: 5px;">
+  <img style="border-radius: 30px;" src="readme_files/chat.gif">
+</div>
+</div> 
 
-## 📝 Arquitetura
+<div style="height: 10px"></div>
+
+<div style="display: flex;">
+<div style="background-image: linear-gradient(#d66afc , #604ee8); padding: 5%; width: 50%; text-align: center; border-radius: 5px;">
+  <img style="border-radius: 30px;" src="readme_files/contacts.gif">
+</div>
+<div style="width: 10px"></div>
+<div style="background-image: linear-gradient(#d66afc , #604ee8); padding: 5%; width: 50%; text-align: center; border-radius: 5px;">
+  <img style="border-radius: 30px;" src="readme_files/profile.gif">
+</div>
+</div> 
+
+## 🗺️ Arquitetura
 - **Repository Pattern:** Para acesso a API externa
 - **Dependency Injection:** Resolver dependências das classes (Provider)
 - **Controllers:** Guardar e mudar estados (ValueNotifier)
@@ -50,31 +67,33 @@ Aplicativo de chat mobile desenvolvido com Flutter e Firebase.
 - [firebase_messaging](https://pub.dev/packages/firebase_messaging)
 - [firebase_storage](https://pub.dev/packages/firebase_storage)
 
-dev:
+**dev:**
 - [mocktail](https://pub.dev/packages/mocktail)
 - [fake_cloud_firestore](https://pub.dev/packages/fake_cloud_firestore)
 
-## 👆 Como usar
-Primeiro você precisa clonar esse repositório. No terminal:
-```terminal
+## 🧭 Instruções de Uso
+Para usar o app, siga estas etapas:
+
+Clone este repositório:
+```bash
 git clone https://github.com/mguilhermeneves/clickchat_app.git
 ```
-Depois instalar as dependências
-```terminal
+Instale as dependências
+```bash
 flutter pub get
 ```
 
-Agora é necessário configurar o Firebase.
+Configure o Firebase seguindo estas etapas.
 
-1. Criar um projeto do Firebase: https://console.firebase.google.com/
+1. Crie um projeto no [Firebase](https://console.firebase.google.com/).
 
-2. Configurar o Firebase no app. Tutorial: https://firebase.google.com/docs/flutter/setup
+2. Configure o Firebase no app seguindo as [instruções aqui](https://console.firebase.google.com/).
 
 3. Dentro do projeto no Firebase, vai ser utilizado o Authentication, Cloud Firestore, Messasing e Storage.
 
-4. No Storage do Firebase, criar uma pasta com o nome `pictures`
+4. Crie uma pasta chamada `pictures` no Firebase Storage.
 
-Após configurar o Firebase, no app, crie o arquivo `cloud_messasing_constant.dart` em ***lib/src/global/constants***. Depois de criado o arquivo, insira o código:
+Após configurar o Firebase no app, crie um arquivo `cloud_messasing_constant.dart` em ***lib/src/global/constants*** e adicione o seguinte código:
 ```dart
 class CloudMessasingConstant {
   // Esse token está nas Configurações do projeto do Firebase, em 
@@ -83,7 +102,15 @@ class CloudMessasingConstant {
 }
 ```
 
-Agora é só executar o app. No terminal:
+Execute o aplicativo:
 ```terminal
 flutter pub run
 ```
+
+## 📢 Aviso
+
+Este projeto foi desenvolvido apenas para fins de diversão e para aprimorar minhas habilidades. Não é adequado para uso em produção ou para fins comerciais.
+
+Se você tiver alguma dúvida ou sugestão, sinta-se à vontade para entrar em contato.
+
+Divirta-se explorando o código!
