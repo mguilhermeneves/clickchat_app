@@ -1,4 +1,4 @@
-<img style="border-radius: 5px;" src="readme_files/clickchat_logo.png" width="100%">
+<img src="readme_files/clickchat_logo.png" width="100%">
 <div style="height: 20px"></div>
 
 Aplicativo de chat mobile desenvolvido com Flutter e Firebase.
@@ -21,27 +21,16 @@ Aplicativo de chat mobile desenvolvido com Flutter e Firebase.
   - Receber e enviar notificações de mensagens
 
 ## 📱 Demo
-<div style="display: flex;">
-<div style="background-image: linear-gradient(#604ee8 , #d66afc); padding: 5%; width: 50%; text-align: center; border-radius: 5px;">
-  <img style="border-radius: 30px;" src="readme_files/login.gif">
+<div align="center">
+  <img src="readme_files/login.gif" alt="gif login" width="45%">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  <img src="readme_files/chat.gif" alt="gif chat" width="45%">
 </div>
-<div style="width: 10px"></div>
-<div style="background-image: linear-gradient(#604ee8 , #d66afc); padding: 5%; width: 50%; text-align: center; border-radius: 5px;">
-  <img style="border-radius: 30px;" src="readme_files/chat.gif">
+<br>
+<div align="center">
+  <img src="readme_files/contacts.gif" alt="gif contacts" width="45%">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  <img src="readme_files/profile.gif" alt="gif profile" width="45%">
 </div>
-</div> 
 
-<div style="height: 10px"></div>
-
-<div style="display: flex;">
-<div style="background-image: linear-gradient(#d66afc , #604ee8); padding: 5%; width: 50%; text-align: center; border-radius: 5px;">
-  <img style="border-radius: 30px;" src="readme_files/contacts.gif">
-</div>
-<div style="width: 10px"></div>
-<div style="background-image: linear-gradient(#d66afc , #604ee8); padding: 5%; width: 50%; text-align: center; border-radius: 5px;">
-  <img style="border-radius: 30px;" src="readme_files/profile.gif">
-</div>
-</div> 
 
 ## 🗺️ Arquitetura
 - **Repository Pattern:** Para acesso a API externa
@@ -78,16 +67,16 @@ Clone este repositório:
 ```bash
 git clone https://github.com/mguilhermeneves/clickchat_app.git
 ```
-Instale as dependências
+Instale as dependências:
 ```bash
 flutter pub get
 ```
 
-Configure o Firebase seguindo estas etapas.
+Configure o Firebase seguindo estas etapas:
 
 1. Crie um projeto no [Firebase](https://console.firebase.google.com/).
 
-2. Configure o Firebase no app seguindo as [instruções aqui](https://console.firebase.google.com/).
+2. Configure o Firebase no app seguindo as [instruções aqui](https://firebase.google.com/docs/flutter/setup).
 
 3. Dentro do projeto no Firebase, vai ser utilizado o Authentication, Cloud Firestore, Messasing e Storage.
 
